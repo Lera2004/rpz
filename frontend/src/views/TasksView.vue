@@ -401,7 +401,7 @@ onMounted(async () => {
 
 <template>
   <div class="tasks-page">
-    <div class="page-header">
+    "C:\OSPanel\modules\database\MySQL-8.0-Win10\bin\mysql.exe" -h be76zvpgpzz8wks2a5ol-mysql.services.clever-cloud.com -P 3306 -u usfwhwsue1rpzeu4 -p be76zvpgpzz8wks2a5ol    <div class="page-header">
         <div>
           <h1>Завдання</h1>
         <p>Циклова комісія «Інженерія програмного забезпечення»</p>
