@@ -1,0 +1,3667 @@
+[
+    {
+        "sheet": "1-1-1",
+        "group": "РПЗ 26 1/9",
+        "course": 1,
+        "semesters": {
+            "first": 1,
+            "second": 2
+        },
+        "items": []
+    },
+    {
+        "sheet": "1-2-1",
+        "group": "РПЗ 26 1/9",
+        "course": 1,
+        "semesters": {
+            "first": 1,
+            "second": 2
+        },
+        "items": [
+            {
+                "row": 9,
+                "code": "1",
+                "name": "Українська мова",
+                "type": "discipline",
+                "teacher": "Ульяненко",
+                "substitute": "Шаповалова",
+                "hours": {
+                    "plan": 152,
+                    "currentYear": 80
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 10,
+                "code": "2",
+                "name": "Українська література",
+                "type": "discipline",
+                "teacher": "Ульяненко",
+                "substitute": "",
+                "hours": {
+                    "plan": 152,
+                    "currentYear": 80
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 11,
+                "code": "3",
+                "name": "Зарубіжна література",
+                "type": "discipline",
+                "teacher": "Верба",
+                "substitute": "",
+                "hours": {
+                    "plan": 70,
+                    "currentYear": 70
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 30,
+                        "classroomHours": 20,
+                        "hoursPerWeek": 1,
+                        "lectures": 20,
+                        "selfStudy": 10,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 12,
+                "code": "4",
+                "name": "Іноземна мова",
+                "type": "discipline",
+                "teacher": "Урбанович",
+                "substitute": "Рекашова",
+                "hours": {
+                    "plan": 152,
+                    "currentYear": 80
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 13,
+                "code": "6",
+                "name": "Всесвітня історія",
+                "type": "discipline",
+                "teacher": "Остапова",
+                "substitute": "",
+                "hours": {
+                    "plan": 80,
+                    "currentYear": 80
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 14,
+                "code": "7",
+                "name": "Громадянська освіта",
+                "type": "discipline",
+                "teacher": "Рекашова",
+                "substitute": "",
+                "hours": {
+                    "plan": 70,
+                    "currentYear": 70
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 70,
+                        "classroomHours": 60,
+                        "hoursPerWeek": 3,
+                        "lectures": 60,
+                        "selfStudy": 10,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 15,
+                "code": "8",
+                "name": "Математика (алгебра і початки аналізу та геометрія)",
+                "type": "discipline",
+                "teacher": "Тимофієнко",
+                "substitute": "",
+                "hours": {
+                    "plan": 242,
+                    "currentYear": 80
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 16,
+                "code": "9",
+                "name": "Природничі науки (інтегрований курс)",
+                "type": "discipline",
+                "teacher": "Дідович",
+                "substitute": "Ганзіна",
+                "hours": {
+                    "plan": 364,
+                    "currentYear": 220
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 80,
+                        "classroomHours": 80,
+                        "hoursPerWeek": 4,
+                        "lectures": 62,
+                        "laboratory": 18,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 140,
+                        "classroomHours": 140,
+                        "hoursPerWeek": 7,
+                        "lectures": 106,
+                        "laboratory": 34,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 17,
+                "code": "10",
+                "name": "Фізична культура",
+                "type": "discipline",
+                "teacher": "Бєльська",
+                "substitute": "",
+                "hours": {
+                    "plan": 210,
+                    "currentYear": 100
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 60,
+                        "classroomHours": 60,
+                        "hoursPerWeek": 3,
+                        "lectures": 60,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    }
+                ]
+            },
+            {
+                "row": 18,
+                "code": "11",
+                "name": "Захист України",
+                "type": "discipline",
+                "teacher": "Ситник",
+                "substitute": "Панакшин",
+                "hours": {
+                    "plan": 140,
+                    "currentYear": 140
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 60,
+                        "classroomHours": 60,
+                        "hoursPerWeek": 3,
+                        "lectures": 60,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 80,
+                        "classroomHours": 60,
+                        "hoursPerWeek": 3,
+                        "lectures": 60,
+                        "selfStudy": 2,
+                        "fieldTraining": 18,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 20,
+                "code": "12",
+                "name": "Інформатика",
+                "type": "discipline",
+                "teacher": "Прокошев",
+                "substitute": "Саєнко",
+                "hours": {
+                    "plan": 105,
+                    "currentYear": 105
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 105,
+                        "classroomHours": 100,
+                        "hoursPerWeek": 5,
+                        "lectures": 30,
+                        "practical": 70,
+                        "selfStudy": 5,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 21,
+                "code": "13",
+                "name": "Технології (Вступ у спеціальність*)",
+                "type": "discipline",
+                "teacher": "Волошин",
+                "substitute": "Прокошев",
+                "hours": {
+                    "plan": 105,
+                    "currentYear": 105
+                },
+                "semesters": [
+                    {
+                        "semester": 2,
+                        "totalHours": 105,
+                        "classroomHours": 100,
+                        "hoursPerWeek": 5,
+                        "lectures": 30,
+                        "practical": 70,
+                        "selfStudy": 5,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 25,
+                "code": "ОК5",
+                "name": "Безпека життєдіяльності",
+                "type": "ОК",
+                "teacher": "Боровик",
+                "substitute": "Басок",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 90,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 30,
+                        "practical": 10,
+                        "selfStudy": 50,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 26,
+                "code": "ОК7",
+                "name": "Основи економічної теорії та правознавства",
+                "type": "ОК",
+                "teacher": "Остапова",
+                "substitute": "",
+                "hours": {
+                    "plan": 120,
+                    "currentYear": 120
+                },
+                "semesters": [
+                    {
+                        "semester": 2,
+                        "totalHours": 120,
+                        "classroomHours": 60,
+                        "hoursPerWeek": 3,
+                        "lectures": 48,
+                        "seminars": 12,
+                        "selfStudy": 60,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 29,
+                "code": "ОК24",
+                "name": "Вступ у спеціальність* (Технології)",
+                "type": "ОК",
+                "teacher": "",
+                "substitute": "",
+                "hours": {
+                    "plan": 150,
+                    "currentYear": 150
+                },
+                "semesters": [
+                    {
+                        "semester": 2,
+                        "totalHours": 150,
+                        "credits": "ЗВ"
+                    }
+                ]
+            },
+            {
+                "row": 32,
+                "code": "ВК2",
+                "name": "Культурологія/ Культура України",
+                "type": "ВК",
+                "teacher": "Верба",
+                "substitute": "",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 2,
+                        "totalHours": 90,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 34,
+                        "seminars": 6,
+                        "selfStudy": 50,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "1-1-2",
+        "group": "РПЗ 26 2/9",
+        "course": 1,
+        "semesters": {
+            "first": 1,
+            "second": 2
+        },
+        "items": []
+    },
+    {
+        "sheet": "1-2-2",
+        "group": "РПЗ 26 2/9",
+        "course": 1,
+        "semesters": {
+            "first": 1,
+            "second": 2
+        },
+        "items": [
+            {
+                "row": 9,
+                "code": "1",
+                "name": "Українська мова",
+                "type": "discipline",
+                "teacher": "Ульяненко",
+                "substitute": "",
+                "hours": {
+                    "plan": 152,
+                    "currentYear": 80
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 10,
+                "code": "2",
+                "name": "Українська література",
+                "type": "discipline",
+                "teacher": "Ульяненко",
+                "substitute": "",
+                "hours": {
+                    "plan": 152,
+                    "currentYear": 80
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 11,
+                "code": "3",
+                "name": "Зарубіжна література",
+                "type": "discipline",
+                "teacher": "Верба",
+                "substitute": "",
+                "hours": {
+                    "plan": 70,
+                    "currentYear": 70
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 30,
+                        "classroomHours": 20,
+                        "hoursPerWeek": 1,
+                        "lectures": 20,
+                        "selfStudy": 10,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 12,
+                "code": "4",
+                "name": "Іноземна мова",
+                "type": "discipline",
+                "teacher": "Рекашова",
+                "substitute": "Урбанович",
+                "hours": {
+                    "plan": 152,
+                    "currentYear": 80
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 13,
+                "code": "6",
+                "name": "Всесвітня історія",
+                "type": "discipline",
+                "teacher": "Остапова",
+                "substitute": "",
+                "hours": {
+                    "plan": 80,
+                    "currentYear": 80
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 14,
+                "code": "7",
+                "name": "Громадянська освіта",
+                "type": "discipline",
+                "teacher": "",
+                "substitute": "",
+                "hours": {
+                    "plan": 70,
+                    "currentYear": 70
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 70,
+                        "classroomHours": 60,
+                        "hoursPerWeek": 3,
+                        "lectures": 60,
+                        "selfStudy": 10,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 15,
+                "code": "8",
+                "name": "Математика (алгебра і початки аналізу та геометрія)",
+                "type": "discipline",
+                "teacher": "Тимофієнко",
+                "substitute": "",
+                "hours": {
+                    "plan": 242,
+                    "currentYear": 80
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 16,
+                "code": "9",
+                "name": "Природничі науки (інтегрований курс)",
+                "type": "discipline",
+                "teacher": "Поліщук",
+                "substitute": "Ганзіна",
+                "hours": {
+                    "plan": 364,
+                    "currentYear": 220
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 80,
+                        "classroomHours": 80,
+                        "hoursPerWeek": 4,
+                        "lectures": 62,
+                        "laboratory": 18,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 140,
+                        "classroomHours": 140,
+                        "hoursPerWeek": 7,
+                        "lectures": 106,
+                        "laboratory": 34,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 17,
+                "code": "10",
+                "name": "Фізична культура",
+                "type": "discipline",
+                "teacher": "Бєльська",
+                "substitute": "",
+                "hours": {
+                    "plan": 210,
+                    "currentYear": 100
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 60,
+                        "classroomHours": 60,
+                        "hoursPerWeek": 3,
+                        "lectures": 60,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 40,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 40,
+                        "credits": "1"
+                    }
+                ]
+            },
+            {
+                "row": 18,
+                "code": "11",
+                "name": "Захист України",
+                "type": "discipline",
+                "teacher": "Ситник",
+                "substitute": "Панакшин",
+                "hours": {
+                    "plan": 140,
+                    "currentYear": 140
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 60,
+                        "classroomHours": 60,
+                        "hoursPerWeek": 3,
+                        "lectures": 60,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 2,
+                        "totalHours": 80,
+                        "classroomHours": 60,
+                        "hoursPerWeek": 3,
+                        "lectures": 60,
+                        "selfStudy": 2,
+                        "fieldTraining": 18,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 20,
+                "code": "12",
+                "name": "Інформатика",
+                "type": "discipline",
+                "teacher": "Прокошев",
+                "substitute": "Саєнко",
+                "hours": {
+                    "plan": 105,
+                    "currentYear": 105
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 105,
+                        "classroomHours": 100,
+                        "hoursPerWeek": 5,
+                        "lectures": 30,
+                        "practical": 70,
+                        "selfStudy": 5,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 21,
+                "code": "13",
+                "name": "Технології (Вступ у спеціальність*)",
+                "type": "discipline",
+                "teacher": "Прокошев",
+                "substitute": "Волошин",
+                "hours": {
+                    "plan": 105,
+                    "currentYear": 105
+                },
+                "semesters": [
+                    {
+                        "semester": 2,
+                        "totalHours": 105,
+                        "classroomHours": 100,
+                        "hoursPerWeek": 5,
+                        "lectures": 30,
+                        "practical": 70,
+                        "selfStudy": 5,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 25,
+                "code": "ОК5",
+                "name": "Безпека життєдіяльності",
+                "type": "ОК",
+                "teacher": "Боровик",
+                "substitute": "Басок",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 1,
+                        "totalHours": 90,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 30,
+                        "practical": 10,
+                        "selfStudy": 50,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 26,
+                "code": "ОК7",
+                "name": "Основи економічної теорії та правознавства",
+                "type": "ОК",
+                "teacher": "Остапова",
+                "substitute": "",
+                "hours": {
+                    "plan": 120,
+                    "currentYear": 120
+                },
+                "semesters": [
+                    {
+                        "semester": 2,
+                        "totalHours": 120,
+                        "classroomHours": 60,
+                        "hoursPerWeek": 3,
+                        "lectures": 48,
+                        "seminars": 12,
+                        "selfStudy": 60,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 29,
+                "code": "ОК24",
+                "name": "Вступ у спеціальність* (Технології)",
+                "type": "ОК",
+                "teacher": "",
+                "substitute": "",
+                "hours": {
+                    "plan": 150,
+                    "currentYear": 150
+                },
+                "semesters": [
+                    {
+                        "semester": 2,
+                        "totalHours": 150,
+                        "credits": "ЗВ"
+                    }
+                ]
+            },
+            {
+                "row": 32,
+                "code": "ВК2",
+                "name": "Культурологія/ Культура України",
+                "type": "ВК",
+                "teacher": "Верба",
+                "substitute": "",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 2,
+                        "totalHours": 90,
+                        "classroomHours": 40,
+                        "hoursPerWeek": 2,
+                        "lectures": 34,
+                        "seminars": 6,
+                        "selfStudy": 50,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "2-1-1",
+        "group": "РПЗ 25 1/9",
+        "course": 2,
+        "semesters": {
+            "first": 3,
+            "second": 4
+        },
+        "items": [
+            {
+                "row": 26,
+                "code": "",
+                "name": "Навчальна практика з проєктування БД ( I частина)",
+                "type": "practice",
+                "teacher": "Прокошев",
+                "substitute": "Волошин",
+                "hours": {
+                    "total": 90,
+                    "classroom": 36,
+                    "selfStudy": 54,
+                    "weeks": 2
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 36,
+                        "hoursPerWeek": 18,
+                        "differentialCredit": "1"
+                    }
+                ]
+            },
+            {
+                "row": 27,
+                "code": "",
+                "name": "Навчальна практика з проєктування БД ( II частина)",
+                "type": "practice",
+                "teacher": "Саєнко",
+                "substitute": "Бабенко",
+                "hours": {
+                    "total": 90,
+                    "classroom": 36,
+                    "selfStudy": 54,
+                    "weeks": 2
+                },
+                "semesters": [
+                    {
+                        "semester": 4,
+                        "totalHours": 36,
+                        "hoursPerWeek": 18,
+                        "differentialCredit": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "2-2-1",
+        "group": "РПЗ 25 1/9",
+        "course": 2,
+        "semesters": {
+            "first": 3,
+            "second": 4
+        },
+        "items": [
+            {
+                "row": 8,
+                "code": "1",
+                "name": "Укр. мова",
+                "type": "discipline",
+                "teacher": "Ульяненко",
+                "substitute": "Шаповалова",
+                "hours": {
+                    "plan": 152,
+                    "previousYear": 80,
+                    "currentYear": 72
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 36,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 36,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 9,
+                "code": "2",
+                "name": "Укр. література",
+                "type": "discipline",
+                "teacher": "Ульяненко",
+                "substitute": "",
+                "hours": {
+                    "plan": 152,
+                    "previousYear": 80,
+                    "currentYear": 72
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 36,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 36,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 10,
+                "code": "4",
+                "name": "Іноземна мова",
+                "type": "discipline",
+                "teacher": "Рекашова",
+                "substitute": "Яроцька",
+                "hours": {
+                    "plan": 152,
+                    "previousYear": 80,
+                    "currentYear": 72
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 36,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 36,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 11,
+                "code": "5",
+                "name": "Історія України 1 (Історія України 2*)",
+                "type": "discipline",
+                "teacher": "Чорнолуцький",
+                "substitute": "",
+                "hours": {
+                    "plan": 108,
+                    "currentYear": 108
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 54,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 54,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 54,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 54,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 12,
+                "code": "8",
+                "name": "Математика (алгебра і початки аналізу та геометрія)",
+                "type": "discipline",
+                "teacher": "Тимофієнко",
+                "substitute": "",
+                "hours": {
+                    "plan": 242,
+                    "previousYear": 80,
+                    "currentYear": 162
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 72,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 72,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 90,
+                        "classroomHours": 90,
+                        "hoursPerWeek": 5,
+                        "lectures": 90,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 13,
+                "code": "9",
+                "name": "Природничі науки. Фізико-астрономічний модуль.",
+                "type": "discipline",
+                "teacher": "Захар'єв",
+                "substitute": "Ганзіна",
+                "hours": {
+                    "plan": 156,
+                    "previousYear": 120,
+                    "currentYear": 36
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 32,
+                        "laboratory": 4,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 14,
+                "code": "9",
+                "name": "Природничі науки. Біолого-екологічний модуль. (Основи екології*)",
+                "type": "discipline",
+                "teacher": "Поліщук",
+                "substitute": "",
+                "hours": {
+                    "plan": 108,
+                    "currentYear": 108
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 54,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 38,
+                        "seminars": 16,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 54,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 40,
+                        "seminars": 14,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 15,
+                "code": "10",
+                "name": "Фізична культура",
+                "type": "discipline",
+                "teacher": "Бірюков",
+                "substitute": "",
+                "hours": {
+                    "plan": 210,
+                    "previousYear": 100,
+                    "currentYear": 110
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 54,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 54,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 56,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 54,
+                        "selfStudy": 2,
+                        "calculationWork": 1
+                    }
+                ]
+            },
+            {
+                "row": 19,
+                "code": "ОК3",
+                "name": "Історія України 2 (Історія України 1*)",
+                "type": "ОК",
+                "teacher": "",
+                "substitute": "",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 90,
+                        "credits": "зв"
+                    }
+                ]
+            },
+            {
+                "row": 20,
+                "code": "ОК8",
+                "name": "Основи екології* (Природничі науки. Біолого-екологічний модуль)",
+                "type": "ОК",
+                "teacher": "",
+                "substitute": "",
+                "hours": {
+                    "plan": 120,
+                    "currentYear": 120
+                },
+                "semesters": [
+                    {
+                        "semester": 4,
+                        "totalHours": 120
+                    }
+                ]
+            },
+            {
+                "row": 23,
+                "code": "ОК9",
+                "name": "Основи програмування та алгоритмічні мови",
+                "type": "ОК",
+                "teacher": "Саєнко",
+                "substitute": "Бабенко",
+                "hours": {
+                    "plan": 240,
+                    "currentYear": 240
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 120,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 14,
+                        "practical": 40,
+                        "selfStudy": 66,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 120,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 14,
+                        "practical": 40,
+                        "selfStudy": 66,
+                        "credits": "1",
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 24,
+                "code": "ОК10",
+                "name": "Об'єктно-орієнтоване програмування",
+                "type": "ОК",
+                "teacher": "Ткачук",
+                "substitute": "Шпіньов",
+                "hours": {
+                    "plan": 240,
+                    "currentYear": 240
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 120,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 26,
+                        "practical": 28,
+                        "selfStudy": 66,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 120,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 24,
+                        "practical": 30,
+                        "selfStudy": 66,
+                        "credits": "1",
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 25,
+                "code": "ОК11",
+                "name": "Операційні системи",
+                "type": "ОК",
+                "teacher": "Смірнова",
+                "substitute": "Саєнко",
+                "hours": {
+                    "plan": 210,
+                    "currentYear": 210
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 120,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 32,
+                        "practical": 22,
+                        "selfStudy": 66,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 90,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 14,
+                        "practical": 22,
+                        "selfStudy": 54,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 26,
+                "code": "ОК25",
+                "name": "Дискретна математика",
+                "type": "ОК",
+                "teacher": "Похальчук",
+                "substitute": "Хоменко",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 4,
+                        "totalHours": 90,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 8,
+                        "practical": 28,
+                        "selfStudy": 54,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 29,
+                "code": "ВК3",
+                "name": "Соціологія",
+                "type": "ВК",
+                "teacher": "Рашевська",
+                "substitute": "",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 90,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 26,
+                        "seminars": 10,
+                        "selfStudy": 54,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 30,
+                "code": "ВК4",
+                "name": "Фізика (електрика)",
+                "type": "ВК",
+                "teacher": "Ганзіна",
+                "substitute": "Захар'єв",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 4,
+                        "totalHours": 90,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 28,
+                        "laboratory": 8,
+                        "selfStudy": 54,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "2-1-2",
+        "group": "РПЗ 25 2/9",
+        "course": 2,
+        "semesters": {
+            "first": 3,
+            "second": 4
+        },
+        "items": [
+            {
+                "row": 26,
+                "code": "",
+                "name": "Навчальна практика з проєктування БД ( I частина)",
+                "type": "practice",
+                "teacher": "Прокошев",
+                "substitute": "Басок",
+                "hours": {
+                    "total": 90,
+                    "classroom": 36,
+                    "selfStudy": 54,
+                    "weeks": 2
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 36,
+                        "hoursPerWeek": 18,
+                        "differentialCredit": "1"
+                    }
+                ]
+            },
+            {
+                "row": 27,
+                "code": "",
+                "name": "Навчальна практика з проєктування БД ( II частина)",
+                "type": "practice",
+                "teacher": "Прокошев",
+                "substitute": "Басок",
+                "hours": {
+                    "total": 90,
+                    "classroom": 36,
+                    "selfStudy": 54,
+                    "weeks": 2
+                },
+                "semesters": [
+                    {
+                        "semester": 4,
+                        "totalHours": 36,
+                        "hoursPerWeek": 18,
+                        "differentialCredit": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "2-2-2",
+        "group": "РПЗ 25 2/9",
+        "course": 2,
+        "semesters": {
+            "first": 3,
+            "second": 4
+        },
+        "items": [
+            {
+                "row": 8,
+                "code": "1",
+                "name": "Укр. мова",
+                "type": "discipline",
+                "teacher": "Ульяненко",
+                "substitute": "Шаповалова",
+                "hours": {
+                    "plan": 152,
+                    "previousYear": 80,
+                    "currentYear": 72
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 36,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 36,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 9,
+                "code": "2",
+                "name": "Укр. література",
+                "type": "discipline",
+                "teacher": "Ульяненко",
+                "substitute": "",
+                "hours": {
+                    "plan": 152,
+                    "previousYear": 80,
+                    "currentYear": 72
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 36,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 36,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 10,
+                "code": "4",
+                "name": "Іноземна мова",
+                "type": "discipline",
+                "teacher": "Урбанович",
+                "substitute": "Яроцька",
+                "hours": {
+                    "plan": 152,
+                    "previousYear": 80,
+                    "currentYear": 72
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 36,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 36,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 11,
+                "code": "5",
+                "name": "Історія України 1 (Історія України 2*)",
+                "type": "discipline",
+                "teacher": "Чорнолуцький",
+                "substitute": "",
+                "hours": {
+                    "plan": 108,
+                    "currentYear": 108
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 54,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 54,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 54,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 54,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 12,
+                "code": "8",
+                "name": "Математика (алгебра і початки аналізу та геометрія)",
+                "type": "discipline",
+                "teacher": "Тимофієнко",
+                "substitute": "",
+                "hours": {
+                    "plan": 242,
+                    "previousYear": 80,
+                    "currentYear": 162
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 72,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 72,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 90,
+                        "classroomHours": 90,
+                        "hoursPerWeek": 5,
+                        "lectures": 90,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 13,
+                "code": "9",
+                "name": "Природничі науки. Фізико-астрономічний модуль.",
+                "type": "discipline",
+                "teacher": "Захар'єв",
+                "substitute": "Ганзіна",
+                "hours": {
+                    "plan": 156,
+                    "previousYear": 120,
+                    "currentYear": 36
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 36,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 32,
+                        "laboratory": 4,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 14,
+                "code": "9",
+                "name": "Природничі науки. Біолого-екологічний модуль. (Основи екології*)",
+                "type": "discipline",
+                "teacher": "Поліщук",
+                "substitute": "",
+                "hours": {
+                    "plan": 108,
+                    "currentYear": 108
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 54,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 38,
+                        "seminars": 16,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 54,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 40,
+                        "seminars": 14,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 15,
+                "code": "10",
+                "name": "Фізична культура",
+                "type": "discipline",
+                "teacher": "Бірюков",
+                "substitute": "",
+                "hours": {
+                    "plan": 210,
+                    "previousYear": 100,
+                    "currentYear": 110
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 54,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 54,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 56,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 54,
+                        "selfStudy": 2,
+                        "calculationWork": 1
+                    }
+                ]
+            },
+            {
+                "row": 19,
+                "code": "ОК3",
+                "name": "Історія України 2 (Історія України 1*)",
+                "type": "ОК",
+                "teacher": "",
+                "substitute": "",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 90
+                    }
+                ]
+            },
+            {
+                "row": 20,
+                "code": "ОК8",
+                "name": "Основи екології* (Природничі науки. Біолого-екологічний модуль)",
+                "type": "ОК",
+                "teacher": "",
+                "substitute": "",
+                "hours": {
+                    "plan": 120,
+                    "currentYear": 120
+                },
+                "semesters": [
+                    {
+                        "semester": 4,
+                        "totalHours": 120
+                    }
+                ]
+            },
+            {
+                "row": 23,
+                "code": "ОК9",
+                "name": "Основи програмування та алгоритмічні мови",
+                "type": "ОК",
+                "teacher": "Саєнко",
+                "substitute": "Бабенко",
+                "hours": {
+                    "plan": 240,
+                    "currentYear": 240
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 120,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 14,
+                        "practical": 40,
+                        "selfStudy": 66,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 120,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 14,
+                        "practical": 40,
+                        "selfStudy": 66,
+                        "credits": "1",
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 24,
+                "code": "ОК10",
+                "name": "Об'єктно-орієнтоване програмування",
+                "type": "ОК",
+                "teacher": "Ткачук",
+                "substitute": "Шпіньов",
+                "hours": {
+                    "plan": 240,
+                    "currentYear": 240
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 120,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 26,
+                        "practical": 28,
+                        "selfStudy": 66,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 120,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 24,
+                        "practical": 30,
+                        "selfStudy": 66,
+                        "credits": "1",
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 25,
+                "code": "ОК11",
+                "name": "Операційні системи",
+                "type": "ОК",
+                "teacher": "Смірнова",
+                "substitute": "Саєнко",
+                "hours": {
+                    "plan": 210,
+                    "currentYear": 210
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 120,
+                        "classroomHours": 54,
+                        "hoursPerWeek": 3,
+                        "lectures": 32,
+                        "practical": 22,
+                        "selfStudy": 66,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 4,
+                        "totalHours": 90,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 14,
+                        "practical": 22,
+                        "selfStudy": 54,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 26,
+                "code": "ОК25",
+                "name": "Дискретна математика",
+                "type": "ОК",
+                "teacher": "Похальчук",
+                "substitute": "Хоменко",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 4,
+                        "totalHours": 90,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 8,
+                        "practical": 28,
+                        "selfStudy": 54,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 29,
+                "code": "ВК3",
+                "name": "Соціологія",
+                "type": "ВК",
+                "teacher": "Рашевська",
+                "substitute": "",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 3,
+                        "totalHours": 90,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 26,
+                        "seminars": 10,
+                        "selfStudy": 54,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 30,
+                "code": "ВК4",
+                "name": "Фізика (електрика)",
+                "type": "ВК",
+                "teacher": "Ганзіна",
+                "substitute": "Захар'єв",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 4,
+                        "totalHours": 90,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 28,
+                        "laboratory": 8,
+                        "selfStudy": 54,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "3-1-1",
+        "group": "РПЗ 24 1/9",
+        "course": 3,
+        "semesters": {
+            "first": 5,
+            "second": 6
+        },
+        "items": [
+            {
+                "row": 26,
+                "code": "",
+                "name": "Навчальна практика з програмування",
+                "type": "practice",
+                "teacher": "Басок",
+                "substitute": "Волошин",
+                "hours": {
+                    "total": 135,
+                    "classroom": 54,
+                    "selfStudy": 81,
+                    "weeks": 3
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 54,
+                        "hoursPerWeek": 18,
+                        "differentialCredit": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "3-2-1",
+        "group": "РПЗ 24 1/9",
+        "course": 3,
+        "semesters": {
+            "first": 5,
+            "second": 6
+        },
+        "items": [
+            {
+                "row": 8,
+                "code": "ОК1",
+                "name": "Укр. мова за проф. cпр.",
+                "type": "ОК",
+                "teacher": "Ульяненко",
+                "substitute": "",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 90,
+                        "classroomHours": 57,
+                        "hoursPerWeek": 3,
+                        "lectures": 2,
+                        "seminars": 55,
+                        "selfStudy": 33,
+                        "exams": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 9,
+                "code": "ОК2",
+                "name": "Іноземна мова проф. спр.",
+                "type": "ОК",
+                "teacher": "Рекашова",
+                "substitute": "Урбанович",
+                "hours": {
+                    "plan": 150,
+                    "currentYear": 150
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 60,
+                        "classroomHours": 38,
+                        "hoursPerWeek": 2,
+                        "seminars": 38,
+                        "selfStudy": 22,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 6,
+                        "totalHours": 90,
+                        "classroomHours": 32,
+                        "hoursPerWeek": 2,
+                        "seminars": 32,
+                        "selfStudy": 58,
+                        "credits": "1",
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 10,
+                "code": "ОК3",
+                "name": "Історія України 2",
+                "type": "ОК",
+                "teacher": "Чорнолуцький",
+                "substitute": "",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 60,
+                        "classroomHours": 38,
+                        "hoursPerWeek": 2,
+                        "lectures": 26,
+                        "seminars": 12,
+                        "selfStudy": 22,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 11,
+                "code": "ОК4",
+                "name": "Фізичне виховання",
+                "type": "ОК",
+                "teacher": "Бірюков",
+                "substitute": "",
+                "hours": {
+                    "plan": 420,
+                    "previousYear": 300,
+                    "currentYear": 120
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 60,
+                        "classroomHours": 38,
+                        "hoursPerWeek": 2,
+                        "lectures": 4,
+                        "seminars": 34,
+                        "selfStudy": 22,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 6,
+                        "totalHours": 60,
+                        "classroomHours": 48,
+                        "hoursPerWeek": 3,
+                        "lectures": 4,
+                        "seminars": 44,
+                        "selfStudy": 12,
+                        "calculationWork": 1
+                    }
+                ]
+            },
+            {
+                "row": 12,
+                "code": "ОК8",
+                "name": "Групова динаміка і комунікації",
+                "type": "ОК",
+                "teacher": "Крещук",
+                "substitute": "",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 60,
+                        "classroomHours": 38,
+                        "hoursPerWeek": 2,
+                        "lectures": 20,
+                        "seminars": 18,
+                        "selfStudy": 22,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 15,
+                "code": "ОК13",
+                "name": "Архітектура комп'ютера",
+                "type": "ОК",
+                "teacher": "Короткий",
+                "substitute": "Прокошев",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 90,
+                        "classroomHours": 64,
+                        "hoursPerWeek": 4,
+                        "lectures": 28,
+                        "practical": 36,
+                        "selfStudy": 26,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 16,
+                "code": "ОК15",
+                "name": "Алгоритми та структури даних",
+                "type": "ОК",
+                "teacher": "Бабенко",
+                "substitute": "Волошин Боровик",
+                "hours": {
+                    "plan": 165,
+                    "currentYear": 165
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 105,
+                        "classroomHours": 76,
+                        "hoursPerWeek": 4,
+                        "lectures": 24,
+                        "practical": 52,
+                        "selfStudy": 29,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 6,
+                        "totalHours": 60,
+                        "classroomHours": 48,
+                        "hoursPerWeek": 3,
+                        "lectures": 28,
+                        "practical": 20,
+                        "selfStudy": 12,
+                        "credits": "1",
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 17,
+                "code": "ОК18",
+                "name": "Основи програмної інженерії",
+                "type": "ОК",
+                "teacher": "Волошин",
+                "substitute": "Бабенко",
+                "hours": {
+                    "plan": 120,
+                    "currentYear": 120
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 120,
+                        "classroomHours": 96,
+                        "hoursPerWeek": 6,
+                        "lectures": 40,
+                        "practical": 56,
+                        "selfStudy": 24,
+                        "credits": "1",
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 18,
+                "code": "ОК19",
+                "name": "Бази даних",
+                "type": "ОК",
+                "teacher": "Шпіньов",
+                "substitute": "Волошин",
+                "hours": {
+                    "plan": 180,
+                    "currentYear": 180
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 180,
+                        "classroomHours": 114,
+                        "hoursPerWeek": 6,
+                        "lectures": 44,
+                        "practical": 70,
+                        "selfStudy": 66,
+                        "courseWork": 1,
+                        "exams": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 19,
+                "code": "ОК22",
+                "name": "WEB - дизайн",
+                "type": "ОК",
+                "teacher": "Смірнова",
+                "substitute": "Саєнко",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 90,
+                        "classroomHours": 64,
+                        "hoursPerWeek": 4,
+                        "lectures": 26,
+                        "practical": 38,
+                        "selfStudy": 26,
+                        "credits": "1",
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 20,
+                "code": "ОК28",
+                "name": "Лінійна алгебра та аналітична геометрія",
+                "type": "ОК",
+                "teacher": "Тимофієнко",
+                "substitute": "",
+                "hours": {
+                    "plan": 75,
+                    "currentYear": 75
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 75,
+                        "classroomHours": 57,
+                        "hoursPerWeek": 3,
+                        "lectures": 27,
+                        "seminars": 30,
+                        "selfStudy": 18,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 21,
+                "code": "ОК29",
+                "name": "Теорія ймовірності і мат. статистика",
+                "type": "ОК",
+                "teacher": "Похальчук",
+                "substitute": "",
+                "hours": {
+                    "plan": 75,
+                    "currentYear": 75
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 75,
+                        "classroomHours": 48,
+                        "hoursPerWeek": 3,
+                        "lectures": 22,
+                        "seminars": 26,
+                        "selfStudy": 27,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 24,
+                "code": "ВК4",
+                "name": "Основи філософських знань",
+                "type": "ВК",
+                "teacher": "Гочаренко",
+                "substitute": "",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 60,
+                        "classroomHours": 38,
+                        "hoursPerWeek": 2,
+                        "lectures": 26,
+                        "seminars": 12,
+                        "selfStudy": 22,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 25,
+                "code": "ВК5",
+                "name": "Фізика (електрика)",
+                "type": "ВК",
+                "teacher": "Ганзіна",
+                "substitute": "Захар'єв",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 60,
+                        "classroomHours": 38,
+                        "hoursPerWeek": 2,
+                        "lectures": 30,
+                        "laboratory": 8,
+                        "selfStudy": 22,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 26,
+                "code": "ВК6",
+                "name": "Проєктний практикум",
+                "type": "ВК",
+                "teacher": "Ткачук",
+                "substitute": "Басок",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 60,
+                        "classroomHours": 32,
+                        "hoursPerWeek": 2,
+                        "lectures": 22,
+                        "practical": 10,
+                        "selfStudy": 28,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 27,
+                "code": "ВК7",
+                "name": "Програмування мовою асемблера",
+                "type": "ВК",
+                "teacher": "Саєнко",
+                "substitute": "Прокошев",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 60,
+                        "classroomHours": 32,
+                        "hoursPerWeek": 2,
+                        "lectures": 14,
+                        "practical": 18,
+                        "selfStudy": 28,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 28,
+                "code": "ВК8",
+                "name": "Диференціальні рівняння",
+                "type": "ВК",
+                "teacher": "Тимофієнко",
+                "substitute": "",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 60,
+                        "classroomHours": 48,
+                        "hoursPerWeek": 3,
+                        "lectures": 18,
+                        "seminars": 30,
+                        "selfStudy": 12,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 29,
+                "code": "ВК9",
+                "name": "Математичний аналіз",
+                "type": "ВК",
+                "teacher": "Захар'єва",
+                "substitute": "",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 90,
+                        "classroomHours": 76,
+                        "hoursPerWeek": 4,
+                        "lectures": 36,
+                        "seminars": 40,
+                        "selfStudy": 14,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "3-1-2",
+        "group": "РПЗ 24 2/9",
+        "course": 3,
+        "semesters": {
+            "first": 5,
+            "second": 6
+        },
+        "items": [
+            {
+                "row": 26,
+                "code": "",
+                "name": "Навчальна практика з програмування",
+                "type": "practice",
+                "teacher": "Басок",
+                "substitute": "Волошин",
+                "hours": {
+                    "total": 135,
+                    "classroom": 54,
+                    "selfStudy": 81,
+                    "weeks": 3
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 54,
+                        "hoursPerWeek": 18,
+                        "differentialCredit": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "3-2-2",
+        "group": "РПЗ 24 2/9",
+        "course": 3,
+        "semesters": {
+            "first": 5,
+            "second": 6
+        },
+        "items": [
+            {
+                "row": 8,
+                "code": "ОК1",
+                "name": "Укр. мова за проф. cпр.",
+                "type": "ОК",
+                "teacher": "Ульяненко",
+                "substitute": "",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 90,
+                        "classroomHours": 57,
+                        "hoursPerWeek": 3,
+                        "lectures": 2,
+                        "seminars": 55,
+                        "selfStudy": 33,
+                        "exams": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 9,
+                "code": "ОК2",
+                "name": "Іноземна мова проф. спр.",
+                "type": "ОК",
+                "teacher": "Рекашова",
+                "substitute": "Урбанович",
+                "hours": {
+                    "plan": 150,
+                    "currentYear": 150
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 60,
+                        "classroomHours": 38,
+                        "hoursPerWeek": 2,
+                        "seminars": 38,
+                        "selfStudy": 22,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 6,
+                        "totalHours": 90,
+                        "classroomHours": 32,
+                        "hoursPerWeek": 2,
+                        "seminars": 32,
+                        "selfStudy": 58,
+                        "credits": "1",
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 10,
+                "code": "ОК3",
+                "name": "Історія України 2",
+                "type": "ОК",
+                "teacher": "Чорнолуцький",
+                "substitute": "",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 60,
+                        "classroomHours": 38,
+                        "hoursPerWeek": 2,
+                        "lectures": 26,
+                        "seminars": 12,
+                        "selfStudy": 22,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 11,
+                "code": "ОК4",
+                "name": "Фізичне виховання",
+                "type": "ОК",
+                "teacher": "Ходус",
+                "substitute": "",
+                "hours": {
+                    "plan": 420,
+                    "previousYear": 300,
+                    "currentYear": 120
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 60,
+                        "classroomHours": 38,
+                        "hoursPerWeek": 2,
+                        "lectures": 4,
+                        "seminars": 34,
+                        "selfStudy": 22,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 6,
+                        "totalHours": 60,
+                        "classroomHours": 48,
+                        "hoursPerWeek": 3,
+                        "lectures": 4,
+                        "seminars": 44,
+                        "selfStudy": 12,
+                        "calculationWork": 1
+                    }
+                ]
+            },
+            {
+                "row": 12,
+                "code": "ОК8",
+                "name": "Групова динаміка і комунікації",
+                "type": "ОК",
+                "teacher": "Крещук",
+                "substitute": "",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 60,
+                        "classroomHours": 38,
+                        "hoursPerWeek": 2,
+                        "lectures": 20,
+                        "seminars": 18,
+                        "selfStudy": 22,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 15,
+                "code": "ОК13",
+                "name": "Архітектура комп'ютера",
+                "type": "ОК",
+                "teacher": "Короткий",
+                "substitute": "Прокошев",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 90,
+                        "classroomHours": 64,
+                        "hoursPerWeek": 4,
+                        "lectures": 28,
+                        "practical": 36,
+                        "selfStudy": 26,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 16,
+                "code": "ОК15",
+                "name": "Алгоритми та структури даних",
+                "type": "ОК",
+                "teacher": "Бабенко",
+                "substitute": "Волошин Боровик",
+                "hours": {
+                    "plan": 165,
+                    "currentYear": 165
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 105,
+                        "classroomHours": 76,
+                        "hoursPerWeek": 4,
+                        "lectures": 24,
+                        "practical": 52,
+                        "selfStudy": 29,
+                        "credits": "1"
+                    },
+                    {
+                        "semester": 6,
+                        "totalHours": 60,
+                        "classroomHours": 48,
+                        "hoursPerWeek": 3,
+                        "lectures": 28,
+                        "practical": 20,
+                        "selfStudy": 12,
+                        "credits": "1",
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 17,
+                "code": "ОК18",
+                "name": "Основи програмної інженерії",
+                "type": "ОК",
+                "teacher": "Боровик",
+                "substitute": "Бабенко",
+                "hours": {
+                    "plan": 120,
+                    "currentYear": 120
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 120,
+                        "classroomHours": 96,
+                        "hoursPerWeek": 6,
+                        "lectures": 40,
+                        "practical": 56,
+                        "selfStudy": 24,
+                        "credits": "1",
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 18,
+                "code": "ОК19",
+                "name": "Бази даних",
+                "type": "ОК",
+                "teacher": "Шпіньов",
+                "substitute": "Волошин",
+                "hours": {
+                    "plan": 180,
+                    "currentYear": 180
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 180,
+                        "classroomHours": 114,
+                        "hoursPerWeek": 6,
+                        "lectures": 44,
+                        "practical": 70,
+                        "selfStudy": 66,
+                        "courseWork": 1,
+                        "exams": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 19,
+                "code": "ОК22",
+                "name": "WEB - дизайн",
+                "type": "ОК",
+                "teacher": "Смірнова",
+                "substitute": "Саєнко",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 90,
+                        "classroomHours": 64,
+                        "hoursPerWeek": 4,
+                        "lectures": 26,
+                        "practical": 38,
+                        "selfStudy": 26,
+                        "credits": "1",
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 20,
+                "code": "ОК28",
+                "name": "Лінійна алгебра та аналітична геометрія",
+                "type": "ОК",
+                "teacher": "Тимофієнко",
+                "substitute": "",
+                "hours": {
+                    "plan": 75,
+                    "currentYear": 75
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 75,
+                        "classroomHours": 57,
+                        "hoursPerWeek": 3,
+                        "lectures": 27,
+                        "seminars": 30,
+                        "selfStudy": 18,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 21,
+                "code": "ОК29",
+                "name": "Теорія ймовірності і мат. статистика",
+                "type": "ОК",
+                "teacher": "Похальчук",
+                "substitute": "",
+                "hours": {
+                    "plan": 75,
+                    "currentYear": 75
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 75,
+                        "classroomHours": 48,
+                        "hoursPerWeek": 3,
+                        "lectures": 22,
+                        "seminars": 26,
+                        "selfStudy": 27,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 24,
+                "code": "ВК4",
+                "name": "Основи філософських знань",
+                "type": "ВК",
+                "teacher": "Гочаренко",
+                "substitute": "",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 60,
+                        "classroomHours": 38,
+                        "hoursPerWeek": 2,
+                        "lectures": 26,
+                        "seminars": 12,
+                        "selfStudy": 22,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 25,
+                "code": "ВК5",
+                "name": "Фізика (електрика)",
+                "type": "ВК",
+                "teacher": "Ганзіна",
+                "substitute": "Захар'єв",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 60,
+                        "classroomHours": 38,
+                        "hoursPerWeek": 2,
+                        "lectures": 30,
+                        "laboratory": 8,
+                        "selfStudy": 22,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 26,
+                "code": "ВК6",
+                "name": "Проєктний практикум",
+                "type": "ВК",
+                "teacher": "Ткачук",
+                "substitute": "Басок",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 60,
+                        "classroomHours": 32,
+                        "hoursPerWeek": 2,
+                        "lectures": 22,
+                        "practical": 10,
+                        "selfStudy": 28,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 27,
+                "code": "ВК7",
+                "name": "Програмування мовою асемблера",
+                "type": "ВК",
+                "teacher": "Саєнко",
+                "substitute": "Прокошев",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 60,
+                        "classroomHours": 32,
+                        "hoursPerWeek": 2,
+                        "lectures": 14,
+                        "practical": 18,
+                        "selfStudy": 28,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 28,
+                "code": "ВК8",
+                "name": "Диференціальні рівняння",
+                "type": "ВК",
+                "teacher": "Тимофієнко",
+                "substitute": "",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 6,
+                        "totalHours": 60,
+                        "classroomHours": 48,
+                        "hoursPerWeek": 3,
+                        "lectures": 18,
+                        "seminars": 30,
+                        "selfStudy": 12,
+                        "calculationWork": 1,
+                        "exams": "1"
+                    }
+                ]
+            },
+            {
+                "row": 29,
+                "code": "ВК9",
+                "name": "Математичний аналіз",
+                "type": "ВК",
+                "teacher": "Захар'єва",
+                "substitute": "",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 5,
+                        "totalHours": 90,
+                        "classroomHours": 76,
+                        "hoursPerWeek": 4,
+                        "lectures": 36,
+                        "seminars": 40,
+                        "selfStudy": 14,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "4-1-1",
+        "group": "РПЗ 23 1/9",
+        "course": 4,
+        "semesters": {
+            "first": 7,
+            "second": 8
+        },
+        "items": [
+            {
+                "row": 25,
+                "code": "",
+                "name": "Навчальна практика з розробки ПЗ",
+                "type": "practice",
+                "teacher": "Басок",
+                "substitute": "Волошин",
+                "hours": {
+                    "total": 135,
+                    "classroom": 54,
+                    "selfStudy": 81,
+                    "weeks": 3
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 54,
+                        "hoursPerWeek": 18,
+                        "differentialCredit": "1"
+                    }
+                ]
+            },
+            {
+                "row": 26,
+                "code": "",
+                "name": "Виробнича технологічна практика",
+                "type": "practice",
+                "teacher": "Ткачук",
+                "substitute": "Короткий",
+                "hours": {
+                    "total": 270,
+                    "weeks": 6
+                },
+                "semesters": [
+                    {
+                        "semester": 8,
+                        "differentialCredit": "1"
+                    }
+                ]
+            },
+            {
+                "row": 27,
+                "code": "",
+                "name": "Переддипломна практика",
+                "type": "practice",
+                "teacher": "Ткачук",
+                "substitute": "Короткий",
+                "hours": {
+                    "total": 270,
+                    "weeks": 5
+                },
+                "semesters": [
+                    {
+                        "semester": 8,
+                        "differentialCredit": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "4-2-1",
+        "group": "РПЗ 23 1/9",
+        "course": 4,
+        "semesters": {
+            "first": 7,
+            "second": 8
+        },
+        "items": [
+            {
+                "row": 8,
+                "code": "ОК6",
+                "name": "Охорона праці",
+                "type": "ОК",
+                "teacher": "Боровик",
+                "substitute": "Басок",
+                "hours": {
+                    "plan": 45,
+                    "currentYear": 45
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 45,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 26,
+                        "practical": 10,
+                        "selfStudy": 9,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 11,
+                "code": "ОК14",
+                "name": "Конструювання програмного забезпечення",
+                "type": "ОК",
+                "teacher": "Ткачук",
+                "substitute": "Басок",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 60,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 12,
+                        "practical": 24,
+                        "selfStudy": 24,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 12,
+                "code": "ОК16",
+                "name": "Візуальне об'єктно-орієнтоване програмування",
+                "type": "ОК",
+                "teacher": "Смірнова",
+                "substitute": "Ткачук",
+                "hours": {
+                    "plan": 135,
+                    "currentYear": 135
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 135,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 22,
+                        "practical": 50,
+                        "selfStudy": 63,
+                        "courseWork": 1,
+                        "exams": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 13,
+                "code": "ОК17",
+                "name": "Організація комп'ютерних мереж",
+                "type": "ОК",
+                "teacher": "Короткий",
+                "substitute": "Боровик",
+                "hours": {
+                    "plan": 105,
+                    "currentYear": 105
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 105,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 28,
+                        "practical": 44,
+                        "selfStudy": 33,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 14,
+                "code": "ОК20",
+                "name": "Розробка серверних додатків",
+                "type": "ОК",
+                "teacher": "Басок",
+                "substitute": "Ткачук",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 90,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 32,
+                        "practical": 40,
+                        "selfStudy": 18,
+                        "exams": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 15,
+                "code": "ОК21",
+                "name": "Розробка web-застосувань",
+                "type": "ОК",
+                "teacher": "Саєнко",
+                "substitute": "Боровик",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 90,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 30,
+                        "practical": 42,
+                        "selfStudy": 18,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 16,
+                "code": "ОК23",
+                "name": "Прикладні бухгалтерські програми",
+                "type": "ОК",
+                "teacher": "Боровик",
+                "substitute": "Короткий",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 90,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 32,
+                        "practical": 40,
+                        "selfStudy": 18,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 17,
+                "code": "ОК25",
+                "name": "Економіка і організація виробництва",
+                "type": "ОК",
+                "teacher": "Короткий",
+                "substitute": "Боровик",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 60,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 26,
+                        "practical": 10,
+                        "selfStudy": 24,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 18,
+                "code": "ОК26",
+                "name": "Математичні методи дослідження операцій",
+                "type": "ОК",
+                "teacher": "Бабенко",
+                "substitute": "Шпіньов",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 90,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 44,
+                        "practical": 28,
+                        "selfStudy": 18,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "4-1-2",
+        "group": "РПЗ 23 2/9",
+        "course": 4,
+        "semesters": {
+            "first": 7,
+            "second": 8
+        },
+        "items": [
+            {
+                "row": 25,
+                "code": "",
+                "name": "Навчальна практика з розробки ПЗ",
+                "type": "practice",
+                "teacher": "Басок",
+                "substitute": "Волошин",
+                "hours": {
+                    "total": 135,
+                    "classroom": 54,
+                    "selfStudy": 81,
+                    "weeks": 3
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 54,
+                        "hoursPerWeek": 18,
+                        "differentialCredit": "1"
+                    }
+                ]
+            },
+            {
+                "row": 26,
+                "code": "",
+                "name": "Виробнича технологічна практика",
+                "type": "practice",
+                "teacher": "Бабенко",
+                "substitute": "Короткий",
+                "hours": {
+                    "total": 270,
+                    "weeks": 6
+                },
+                "semesters": [
+                    {
+                        "semester": 8,
+                        "differentialCredit": "1"
+                    }
+                ]
+            },
+            {
+                "row": 27,
+                "code": "",
+                "name": "Переддипломна практика",
+                "type": "practice",
+                "teacher": "Бабенко",
+                "substitute": "Короткий",
+                "hours": {
+                    "total": 270,
+                    "weeks": 5
+                },
+                "semesters": [
+                    {
+                        "semester": 8,
+                        "differentialCredit": "1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "sheet": "4-2-2",
+        "group": "РПЗ 23 2/9",
+        "course": 4,
+        "semesters": {
+            "first": 7,
+            "second": 8
+        },
+        "items": [
+            {
+                "row": 8,
+                "code": "ОК6",
+                "name": "Охорона праці",
+                "type": "ОК",
+                "teacher": "Боровик",
+                "substitute": "Басок",
+                "hours": {
+                    "plan": 45,
+                    "currentYear": 45
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 45,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 26,
+                        "practical": 10,
+                        "selfStudy": 9,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 11,
+                "code": "ОК14",
+                "name": "Конструювання програмного забезпечення",
+                "type": "ОК",
+                "teacher": "Ткачук",
+                "substitute": "Басок",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 60,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 12,
+                        "practical": 24,
+                        "selfStudy": 24,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 12,
+                "code": "ОК16",
+                "name": "Візуальне об'єктно-орієнтоване програмування",
+                "type": "ОК",
+                "teacher": "Смірнова",
+                "substitute": "Ткачук",
+                "hours": {
+                    "plan": 135,
+                    "currentYear": 135
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 135,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 22,
+                        "practical": 50,
+                        "selfStudy": 63,
+                        "courseWork": 1,
+                        "exams": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 13,
+                "code": "ОК17",
+                "name": "Організація комп'ютерних мереж",
+                "type": "ОК",
+                "teacher": "Короткий",
+                "substitute": "Боровик",
+                "hours": {
+                    "plan": 105,
+                    "currentYear": 105
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 105,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 28,
+                        "practical": 44,
+                        "selfStudy": 33,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 14,
+                "code": "ОК20",
+                "name": "Розробка серверних додатків",
+                "type": "ОК",
+                "teacher": "Басок",
+                "substitute": "Ткачук",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 90,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 32,
+                        "practical": 40,
+                        "selfStudy": 18,
+                        "exams": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 15,
+                "code": "ОК21",
+                "name": "Розробка web-застосувань",
+                "type": "ОК",
+                "teacher": "Саєнко",
+                "substitute": "Боровик",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 90,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 30,
+                        "practical": 42,
+                        "selfStudy": 18,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 16,
+                "code": "ОК23",
+                "name": "Прикладні бухгалтерські програми",
+                "type": "ОК",
+                "teacher": "Боровик",
+                "substitute": "Короткий",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 90,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 32,
+                        "practical": 40,
+                        "selfStudy": 18,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 17,
+                "code": "ОК25",
+                "name": "Економіка і організація виробництва",
+                "type": "ОК",
+                "teacher": "Короткий",
+                "substitute": "Боровик",
+                "hours": {
+                    "plan": 60,
+                    "currentYear": 60
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 60,
+                        "classroomHours": 36,
+                        "hoursPerWeek": 2,
+                        "lectures": 26,
+                        "practical": 10,
+                        "selfStudy": 24,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            },
+            {
+                "row": 18,
+                "code": "ОК26",
+                "name": "Математичні методи дослідження операцій",
+                "type": "ОК",
+                "teacher": "Бабенко",
+                "substitute": "Шпіньов",
+                "hours": {
+                    "plan": 90,
+                    "currentYear": 90
+                },
+                "semesters": [
+                    {
+                        "semester": 7,
+                        "totalHours": 90,
+                        "classroomHours": 72,
+                        "hoursPerWeek": 4,
+                        "lectures": 44,
+                        "practical": 28,
+                        "selfStudy": 18,
+                        "credits": "1",
+                        "controlWorks": "1"
+                    }
+                ]
+            }
+        ]
+    }
+]
