@@ -241,17 +241,19 @@ function escapeTelegramHtml(value = '') {
     .replace(/"/g, '&quot;')
 }
 
-function getEducationProcessApiUrl() {
+function getBackendApiBaseUrl() {
   const configured = process.env.PUBLIC_API_URL || process.env.BACKEND_PUBLIC_URL || process.env.APP_URL || 'http://localhost:3000'
   const normalized = String(configured).trim().replace(/\/$/, '')
 
   if (!normalized) {
-    return 'http://localhost:3000/api/education-process'
+    return 'http://localhost:3000/api'
   }
 
-  return normalized.includes('/api')
-    ? `${normalized}/education-process`
-    : `${normalized}/api/education-process`
+  return normalized.endsWith('/api') ? normalized : `${normalized}/api`
+}
+
+function getEducationProcessApiUrl() {
+  return `${getBackendApiBaseUrl()}/education-process`
 }
 
 async function fetchEducationProcessData() {
@@ -574,7 +576,7 @@ async function fetchMyTasksForTeacher(teacherId) {
  if (!teacherId) return []
 
  try {
-   const response = await fetch(`http://localhost:${process.env.PORT || 3000}/api/tasks/my?teacher_id=${encodeURIComponent(teacherId)}`)
+   const response = await fetch(`${getBackendApiBaseUrl()}/tasks/my?teacher_id=${encodeURIComponent(teacherId)}`)
    if (!response.ok) return []
 
    const data = await response.json()
@@ -954,7 +956,7 @@ async function handleTelegramUpdate(update) {
             return
           }
 
-          const response = await fetch(`http://localhost:${process.env.PORT || 3000}/api/tasks/${taskId}/assignments/${assignmentId}/status`, {
+          const response = await fetch(`${getBackendApiBaseUrl()}/tasks/${taskId}/assignments/${assignmentId}/status`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: nextStatus })
@@ -1555,8 +1557,7 @@ async function processChannelPost(message) {
   // Create task by calling internal API
   try {
     await updateTelegramMessage(dbId, { processing_status: 'creating_task' })
-    const port = process.env.PORT || 3000
-    const res = await fetch(`http://localhost:${port}/api/tasks`, {
+    const res = await fetch(`${getBackendApiBaseUrl()}/tasks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
