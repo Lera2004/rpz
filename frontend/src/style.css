@@ -131,3 +131,81 @@ button,input,select,textarea{font-family:inherit}
 
 /* Accessibility focus states */
 :focus{outline:2px solid rgba(37,99,235,0.12);outline-offset:2px}
+
+/* Additional mobile-first overrides to ensure consistent mobile UX across all pages */
+@media (max-width: 760px) {
+  /* Header compact */
+  .header{
+    height:auto;
+    padding:12px;
+    gap:10px;
+  }
+  .brand-mark{width:40px;height:40px}
+  .brand-title{font-size:0.95rem}
+  .brand-subtitle{display:none}
+
+  .header-actions{gap:8px}
+  .user-chip{display:none}
+  .logout-button{padding:6px 8px;font-size:0.9rem}
+
+  /* Sidebar becomes a horizontal top nav for mobile */
+  .sidebar{
+    width:100%;
+    display:block;
+    padding:8px 10px;
+    border-right:none;
+    border-bottom:1px solid rgba(15,23,42,0.04);
+    background:transparent;
+  }
+  .sidebar-nav{display:flex;flex-direction:row;gap:6px;overflow-x:auto;padding:6px}
+  .sidebar a{white-space:nowrap;padding:8px 10px;font-size:0.95rem}
+
+  /* Content padding reduced */
+  .content{padding:12px}
+  .container{padding:0 6px}
+
+  /* Cards and containers more compact */
+  .card{padding:12px;border-radius:10px}
+  .h1{font-size:1.05rem}
+  .h2{font-size:0.95rem}
+
+  /* Forms and buttons stack full width when appropriate */
+  .input, input[type=text],textarea,select{padding:10px;border-radius:10px}
+  .button{width:100%;justify-content:center;padding:10px}
+  .button.ghost{width:100%}
+
+  /* Tables and grids become single column where possible */
+  .grid-2, .grid-3{display:block}
+
+  /* Modal adjustments */
+  .modal{width:calc(100vw - 16px)!important;max-height:92vh;padding:12px;border-radius:12px}
+  .modal-backdrop{align-items:flex-end}
+
+  /* Utility tweaks */
+  .mt-12{margin-top:10px}
+  .mb-12{margin-bottom:10px}
+  .gap-16{gap:12px}
+
+  /* Make interactive targets comfortably large */
+  button, .icon-button, .sidebar a{min-height:40px}
+
+  /* Make lists and form controls easier to use on touch */
+  select, input[type=text], textarea{font-size:1rem}
+
+  /* Ensure header action icons have enough spacing */
+  .header-actions .icon-button{padding:10px}
+
+  /* Specific small-screen tweaks for common view elements */
+  .summary-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .summary-card strong{font-size:1.6rem}
+
+  /* Improve readability on narrow devices */
+  body{font-size:15px}
+
+  /* Ensure any inline modals or detail panes collapse to single column */
+  .detail-block, .detail-section, .two-columns, .assignment-item, .detail-assignment-item{grid-template-columns:1fr!important}
+
+  /* Make images and media responsive */
+  img{max-width:100%;height:auto}
+}
+

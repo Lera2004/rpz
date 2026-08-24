@@ -1135,14 +1135,102 @@ onMounted(async () => {
 .calendar-task-pill{background:#eff6ff;padding:6px 8px;border-radius:8px;font-size:0.85rem;margin-bottom:6px;cursor:pointer}
 
 @media (max-width: 760px) {
+  /* Layout adjustments */
   .page-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 8px;
   }
 
-  .two-columns,
-  .assignment-item {
-    grid-template-columns: 1fr;
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
   }
+
+  .toolbar-group {
+    min-width: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .toolbar-group label { display: none; }
+
+  .toolbar-group select,
+  .toolbar-group input { flex: 1; }
+
+  .search-box { min-width: 0; }
+
+  /* Single column task list and reduced paddings */
+  .task-list {
+    grid-template-columns: 1fr !important;
+  }
+
+  .task-card {
+    padding: 12px;
+  }
+
+  .summary-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .summary-card strong { font-size: 1.5rem; }
+
+  /* Calendar: make grid horizontally scrollable on small screens */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(120px, 1fr));
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px;
+  }
+
+  .calendar-day { min-height: 64px; padding: 6px; }
+  .calendar-day-number { font-size: 0.75rem; }
+  .calendar-task-pill { font-size: 0.82rem; padding: 5px 6px; }
+
+  /* Forms and modals become full width for better mobile UX */
+  .modal {
+    width: calc(100vw - 16px);
+    max-height: 94vh;
+    border-radius: 12px;
+    padding: 12px;
+    margin: 8px;
+    overflow: auto;
+  }
+
+  .modal-backdrop { align-items: flex-end; }
+
+  .task-form label { font-size: 0.9rem; }
+
+  .two-columns,
+  .assignment-item,
+  .detail-assignment-item {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+  }
+
+  .assignment-actions { justify-content: flex-start; }
+
+  .teacher-list { grid-template-columns: 1fr; max-height: 220px; }
+
+  /* Buttons stacked and full width where appropriate */
+  .form-actions { flex-direction: column-reverse; align-items: stretch; }
+  .form-actions .primary-button, .form-actions .secondary-button { width: 100%; }
+
+  .detail-actions { flex-direction: column; gap: 8px; }
+  .detail-actions button { width: 100%; }
+
+  /* Compact typography for mobile */
+  .page-header h1 { font-size: 1.4rem; }
+  .task-header h3 { font-size: 1rem; }
+  .task-meta, .mini-task-meta { font-size: 0.75rem; }
+
+  /* Ensure clickable areas are comfortable */
+  .calendar-task-pill, .status-button { padding: 8px 10px; }
+
+  /* Fix toolbar button in header */
+  .page-header > button.primary-button { width: 100%; text-align: center; }
 }
 </style>
