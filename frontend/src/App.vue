@@ -1,8 +1,13 @@
 <script setup>
-import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
+import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const mobileNavOpen = ref(false)
+
+watch(() => router.currentRoute.value.fullPath, () => {
+  mobileNavOpen.value = false
+})
 
 const getCurrentUser = () => {
   try {
@@ -133,7 +138,17 @@ const academicYear = (() => {
 
       <div class="layout">
         <aside class="sidebar">
-          <nav class="sidebar-nav">
+          <button
+            class="mobile-nav-toggle"
+            type="button"
+            aria-controls="primary-navigation"
+            :aria-expanded="mobileNavOpen"
+            @click="mobileNavOpen = !mobileNavOpen"
+          >
+            <span>Розділи</span>
+            <span aria-hidden="true">{{ mobileNavOpen ? '−' : '+' }}</span>
+          </button>
+          <nav id="primary-navigation" class="sidebar-nav" :class="{ 'is-open': mobileNavOpen }">
             <RouterLink v-for="item in navigation" :key="item.to" :to="item.to">
               {{ item.label }}
             </RouterLink>
