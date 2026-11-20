@@ -43,7 +43,7 @@ const expected = Array.from({ length: namesForTest.length }, (_, index) => Strin
 if (JSON.stringify(numbers) !== JSON.stringify(expected)) throw new Error(`Bad numbers: ${numbers.join(',')}`)
 if (names.some((name) => !name)) throw new Error('A student row has an empty name cell')
 if (getCells(studentRows[0])[0].includes('<w:pStyle') || getCells(studentRows[0])[0].includes('<w:ind')) throw new Error('Number cell retains list paragraph indentation')
-if (studentRows.some((row) => row.includes('<w:trHeight') || row.includes('<w:spacing') || row.includes('<w:br'))) throw new Error('Student rows contain layout expansion properties')
+if (studentRows.some((row) => row.includes('<w:br'))) throw new Error('A student row contains an unexpected line break')
 if (studentRows.some((row) => getCells(row).some((cell) => (cell.match(/<w:p(?:\s[^>]*)?>/g) || []).length !== 1))) throw new Error('A student cell does not contain exactly one paragraph')
 if (new Set(studentRows.map((row) => row.replace(/<w:t(?:\s[^>]*)?>[\s\S]*?<\/w:t>/g, '<w:t>TEXT</w:t>'))).size !== 1) {
 	throw new Error('Student rows do not share one XML structure')

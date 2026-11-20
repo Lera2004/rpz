@@ -138,6 +138,38 @@ function isSectionRow(name) {
     );
 }
 
+function getDisciplineSection(row) {
+    const heading = row
+        .map(clean)
+        .filter(Boolean)
+        .join(' ')
+        .toLocaleLowerCase('uk-UA');
+
+    if (/загальн[\p{L}]*\s+компетенц/u.test(heading)) {
+        return 'general';
+    }
+
+    if (/спеціальн[\p{L}]*\s+компетенц/u.test(heading)) {
+        return 'special';
+    }
+
+    if (
+        /вибірков[\p{L}]*\s+освітн[\p{L}]*\s+компонент/u.test(heading) ||
+        /за вибором здобувача/.test(heading)
+    ) {
+        return 'elective';
+    }
+
+    if (
+        /предмети за програмою профільної середньої освіти/.test(heading) ||
+        /базові предмети/.test(heading)
+    ) {
+        return 'profile';
+    }
+
+    return null;
+}
+
 
 function isCalendarMarker(name) {
     const value = clean(name)
@@ -260,10 +292,30 @@ function addPresentValue(target, key, value, asNumber = true) {
 }
 
 
-function extractSemesterSummary(row, semester, semesterSlot) {
+function findHeaderColumn(headers, start, end, predicate) {
+    for (let index = start; index <= end; index++) {
+        if (predicate(clean(headers[index]).toLocaleLowerCase('uk-UA'))) {
+            return index;
+        }
+    }
+
+    return null;
+}
+
+function extractSemesterSummary(row, semester, semesterSlot, headers) {
     const start = semesterSlot === 1 ? 5 : 18;
+    const end = semesterSlot === 1 ? 17 : 31;
     const summary = {
         semester
+    };
+    const hasHeaders = Array.from({ length: end - start + 1 }, (_, offset) =>
+        clean(headers[start + offset])
+    ).some(Boolean);
+    const valueFor = (predicate, fallbackOffset) => {
+        const index = findHeaderColumn(headers, start, end, predicate);
+        return index === null
+            ? hasHeaders ? '' : getCell(row, start + fallbackOffset)
+            : getCell(row, index);
     };
 
     const numericFields = [
@@ -278,50 +330,40 @@ function extractSemesterSummary(row, semester, semesterSlot) {
         ...(semesterSlot === 2
             ? [['fieldTraining', 8]]
             : []),
-        ['courseWork', semesterSlot === 1 ? 8 : 9],
-        ['calculationWork', semesterSlot === 1 ? 9 : 10]
+        ['courseWork', valueFor(header => header.includes('курсов'), semesterSlot === 1 ? 8 : 9)],
+        ['calculationWork', valueFor(
+            header => header.includes('розрахунк') || header.includes('графічн'),
+            semesterSlot === 1 ? 9 : 10
+        )]
     ];
 
-    for (const [key, offset] of numericFields) {
-        addPresentValue(
-            summary,
-            key,
-            getCell(row, start + offset)
-        );
+    for (const [key, offsetOrValue] of numericFields) {
+        const value = typeof offsetOrValue === 'number'
+            ? getCell(row, start + offsetOrValue)
+            : offsetOrValue;
+        addPresentValue(summary, key, value);
     }
 
-    addPresentValue(
-        summary,
-        'credits',
-        getCell(row, start + (semesterSlot === 1 ? 10 : 11)),
-        false
-    );
+    const controlFields = [
+        ['differentialCredit', header => header.includes('диференц') || /диф\.?\s*залік/.test(header), semesterSlot === 1 ? 10 : 11],
+        ['credits', header => header.includes('залік') && !header.includes('диференц') && !/диф\.?\s*залік/.test(header), semesterSlot === 1 ? 10 : 11],
+        ['exams', header => header.includes('екзамен') || header.includes('іспит'), semesterSlot === 1 ? 11 : 12],
+        ['controlWorks', header => header.includes('контрольні роботи'), semesterSlot === 1 ? 12 : 13]
+    ];
 
-    addPresentValue(
-        summary,
-        'exams',
-        getCell(row, start + (semesterSlot === 1 ? 11 : 12)),
-        false
-    );
+    for (const [key, predicate, fallbackOffset] of controlFields) {
+        const value = valueFor(predicate, fallbackOffset);
+        if (key !== 'controlWorks' || !isTeacherLike(value)) {
+            addPresentValue(summary, key, value, false);
+        }
+    }
 
-    const controlWorks = getCell(
-        row,
-        start + (semesterSlot === 1 ? 12 : 13)
-    );
-
-    /*
-     * У 8-му семестрі в цій колонці часто знаходиться
-     * прізвище викладача, який приймає контрольну роботу.
-     * Це не контрольна робота плану, тому прізвище не
-     * показуємо. Числове значення "1" залишаємо.
-     */
-    if (!isTeacherLike(controlWorks)) {
-        addPresentValue(
-            summary,
-            'controlWorks',
-            controlWorks,
-            false
-        );
+    for (let index = start; index <= end; index++) {
+        const value = getCell(row, index);
+        const key = controlFieldFromValue(value);
+        if (key && summary[key] === undefined) {
+            addPresentValue(summary, key, value, false);
+        }
     }
 
     return summary;
@@ -427,7 +469,7 @@ function buildExpandedRows(workbook, worksheet) {
 // ЗАГОЛОВКИ КОЛОНОК
 // =========================================================
 
-function buildColumnHeaders(rows) {
+function buildColumnHeaders(rows, startRow = 0, endRow = rows.length) {
     const headers = {};
 
     const maxColumns = Math.max(
@@ -440,10 +482,8 @@ function buildColumnHeaders(rows) {
      * у верхніх 30 рядках.
      */
 
-    const headerEnd = Math.min(
-        rows.length,
-        35
-    );
+    const headerStart = Math.max(0, startRow);
+    const headerEnd = Math.min(rows.length, endRow);
 
     for (
         let column = 0;
@@ -453,7 +493,7 @@ function buildColumnHeaders(rows) {
         const parts = [];
 
         for (
-            let rowIndex = 0;
+            let             rowIndex = headerStart;
             rowIndex < headerEnd;
             rowIndex++
         ) {
@@ -512,6 +552,17 @@ function isControlText(value) {
         text === 'ПР' ||
         text === 'А'
     );
+}
+
+function controlFieldFromValue(value) {
+    const text = clean(value)
+        .toLocaleLowerCase('uk-UA')
+        .replace(/[.\s-]+/g, '');
+
+    if (text.includes('диференц') || text === 'диф' || text === 'дифзалік') return 'differentialCredit';
+    if (text === 'екз' || text === 'екзамен') return 'exams';
+    if (text === 'зв' || text === 'зал' || text === 'залік') return 'credits';
+    return null;
 }
 
 
@@ -686,7 +737,161 @@ function findTeacherAndSubstitute(row, headers) {
 // УСІ ЗНАЧЕННЯ РЯДКА
 // =========================================================
 
-function readAllColumns(row, headers) {
+const disciplineBaseColumnLabels = {
+    0: '№ за навчальним планом',
+    1: 'Назва дисципліни',
+    2: 'Годин за навчальним планом',
+    3: 'Годин прочитано в минулому році (семестрі)',
+    4: 'Годин на поточний навчальний рік',
+    32: 'Основний викладач',
+    33: 'Викладач-дублер'
+}
+
+const firstSemesterDisciplineLabels = [
+    'Усього годин',
+    'Аудиторних годин',
+    'Годин на тиждень',
+    'Лекції',
+    'Практичні заняття',
+    'Лабораторні заняття',
+    'Семінарські та практичні заняття',
+    'Самостійна робота / заняття з ЗОП',
+    'Курсові проєкти (роботи)',
+    'Розрахункові та графічні роботи',
+    'Контрольні заходи — залік',
+    'Контрольні заходи — екзамен',
+    'Контрольні заходи — обов’язкові контрольні роботи'
+]
+
+const secondSemesterDisciplineLabels = [
+    ...firstSemesterDisciplineLabels.slice(0, 8),
+    'Навчально-польові збори / заняття',
+    ...firstSemesterDisciplineLabels.slice(8)
+]
+
+const practiceBaseColumnLabels = {
+    0: 'Назва практики',
+    13: 'За планом — усього годин',
+    14: 'За планом — усього годин',
+    15: 'За планом — усього годин',
+    16: 'За планом — аудиторних годин',
+    17: 'За планом — аудиторних годин',
+    18: 'За планом — аудиторних годин',
+    19: 'За планом — годин самостійної роботи',
+    20: 'За планом — годин самостійної роботи',
+    21: 'Тривалість практики — тижнів',
+    36: 'Основний викладач',
+    41: 'Викладач-дублер'
+}
+
+const semesterNames = [
+    'перший',
+    'другий',
+    'третій',
+    'четвертий',
+    'п’ятий',
+    'шостий',
+    'сьомий',
+    'восьмий'
+]
+const practiceSemesterLabels = {
+    totalHours: 'Усього годин',
+    classroomHours: 'Аудиторних годин',
+    weeklyHours: 'Годин на тиждень',
+    differentialCredit: 'Контрольні заходи — диференційний залік',
+    credit: 'Контрольні заходи — залік'
+}
+
+function practiceSemesterField(index) {
+    if (index === 0) return practiceSemesterLabels.totalHours
+    if (index === 1 || index === 2) return practiceSemesterLabels.classroomHours
+    if (index === 3 || index === 4) return practiceSemesterLabels.weeklyHours
+    if (index === 5) return practiceSemesterLabels.differentialCredit
+    return practiceSemesterLabels.credit
+}
+
+function semesterName(value) {
+    const name = semesterNames[value - 1] || `${value}-й`
+    return name.charAt(0).toLocaleUpperCase('uk-UA') + name.slice(1)
+}
+
+function getSourceColumnLabel(index, kind, semesters, headers, value) {
+    if (kind === 'practice') {
+        const header = clean(headers[index]).toLowerCase();
+        if (index >= 36 && header.includes('дублер')) return 'Викладач-дублер';
+        if (index >= 36 && header.includes('основний')) return 'Основний викладач';
+
+        if (index === 0 && !clean(value).toLowerCase().includes('практик')) {
+            return 'Продовження назви практики'
+        }
+
+        const baseLabel = practiceBaseColumnLabels[index]
+        if (baseLabel) return baseLabel
+
+        if (index >= 22 && index <= 28) {
+            return `${semesterName(semesters.first)} семестр — ${practiceSemesterField(index - 22)}`
+        }
+
+        if (index >= 29 && index <= 35) {
+            return `${semesterName(semesters.second)} семестр — ${practiceSemesterField(index - 29)}`
+        }
+    } else {
+        if (index >= 5 && index <= 31) {
+            const header = clean(headers[index]).toLocaleLowerCase('uk-UA');
+            const valueControl = controlFieldFromValue(value);
+            if (valueControl) {
+                const controlLabels = {
+                    credits: 'Контрольні заходи — залік',
+                    differentialCredit: 'Контрольні заходи — диференційний залік',
+                    exams: 'Контрольні заходи — екзамен'
+                }
+                const label = controlLabels[valueControl]
+                if (label) {
+                    const semester = index <= 17 ? semesters.first : semesters.second
+                    return `${semesterName(semester)} семестр — ${label}`
+                }
+            }
+            const semanticLabel = header.includes('диференц')
+                ? 'Контрольні заходи — диференційний залік'
+                : header.includes('залік')
+                    ? 'Контрольні заходи — залік'
+                    : header.includes('екзамен') || header.includes('іспит')
+                        ? 'Контрольні заходи — екзамен'
+                        : header.includes('контрольні роботи')
+                            ? 'Контрольні заходи — обов’язкові контрольні роботи'
+                            : header.includes('курсов')
+                                ? 'Курсові роботи'
+                                : header.includes('розрахунк') || header.includes('графічн')
+                                    ? 'Розрахункові та графічні роботи'
+                                    : ''
+
+            if (semanticLabel) {
+                const semester = index <= 17 ? semesters.first : semesters.second
+                return `${semesterName(semester)} семестр — ${semanticLabel}`
+            }
+        }
+
+        const baseLabel = disciplineBaseColumnLabels[index]
+        if (baseLabel) return baseLabel
+
+        if (index >= 5 && index <= 17) {
+            return `${semesterName(semesters.first)} семестр — ${firstSemesterDisciplineLabels[index - 5]}`
+        }
+
+        if (index >= 18 && index <= 31) {
+            return `${semesterName(semesters.second)} семестр — ${secondSemesterDisciplineLabels[index - 18]}`
+        }
+    }
+
+    const header = clean(headers[index])
+    if (header && !header.includes('/')) {
+        return `За заголовком «${header}»`
+    }
+
+    return `Додаткові дані (колонка ${columnLetter(index)})`
+}
+
+function readAllColumns(row, kind, semesters, headers) {
     const result = [];
 
     for (
@@ -705,7 +910,7 @@ function readAllColumns(row, headers) {
         result.push({
             column: columnLetter(i),
             index: i,
-            header: clean(headers[i]),
+            label: getSourceColumnLabel(i, kind, semesters, headers, value),
             value
         });
     }
@@ -879,19 +1084,6 @@ function isRealPracticeName(name) {
 
 
 function readPracticeTeacher(row, headers, kind) {
-    /*
-     * У таблиці практик викладачі мають стабільні колонки:
-     * AJ — основний, AO — дублер. Заголовки можуть бути
-     * об'єднаними, тому спочатку використовуємо ці колонки,
-     * а потім робимо пошук за заголовком.
-     */
-    const fixedIndex = kind === 'teacher' ? 36 : 41;
-    const fixedValue = clean(getCell(row, fixedIndex));
-
-    if (fixedValue && isTeacherLike(fixedValue)) {
-        return fixedValue;
-    }
-
     for (let i = 0; i < row.length; i++) {
         const header = clean(headers[i]).toLowerCase();
         const matches = kind === 'teacher'
@@ -906,6 +1098,19 @@ function readPracticeTeacher(row, headers, kind) {
             }
         }
     }
+
+    const candidates = [...new Set(
+        row.slice(36)
+            .map(clean)
+            .filter(value => value && isTeacherLike(value))
+    )]
+
+    if (kind === 'teacher' && candidates.length) return candidates[0]
+    if (kind === 'substitute' && candidates.length > 1) return candidates[1]
+
+    const fixedIndex = kind === 'teacher' ? 36 : 41;
+    const fixedValue = clean(getCell(row, fixedIndex));
+    if (fixedValue && isTeacherLike(fixedValue)) return fixedValue
 
     return '';
 }
@@ -947,6 +1152,7 @@ function readDisciplines(
     headers
 ) {
     const disciplines = [];
+    let currentSection = 'profile';
 
     const semesters =
         getSemesterPair(sheetName);
@@ -966,6 +1172,11 @@ function readDisciplines(
         rowIndex++
     ) {
         const row = rows[rowIndex];
+        const rowSection = getDisciplineSection(row);
+        if (rowSection) {
+            currentSection = rowSection;
+            continue;
+        }
 
         if (isEmptyRow(row)) {
             continue;
@@ -1073,8 +1284,15 @@ function readDisciplines(
         const allColumns =
             readAllColumns(
                 row,
+                'discipline',
+                semesters,
                 headers
             );
+
+        const summaryHours = {};
+        addPresentValue(summaryHours, 'plan', getCell(row, 2));
+        addPresentValue(summaryHours, 'previousYear', getCell(row, 3));
+        addPresentValue(summaryHours, 'currentYear', getCell(row, 4));
 
         /*
          * Семестрові дані.
@@ -1117,9 +1335,23 @@ function readDisciplines(
             code,
             name,
             type,
+            section: currentSection,
 
             teacher,
             substitute,
+            sourceData: {
+                sheet: sheetName,
+                row: rowIndex + 1,
+                section: currentSection,
+                columns: allColumns,
+                hours,
+                summaryHours,
+                controls,
+                semesters: [
+                    { semester: semesters.first, values: semester1 },
+                    { semester: semesters.second, values: semester2 }
+                ]
+            },
 
             hours: compactHours({
                 plan: number(getCell(row, 2)),
@@ -1128,8 +1360,8 @@ function readDisciplines(
             }),
 
             semesters: [
-                extractSemesterSummary(row, semesters.first, 1),
-                extractSemesterSummary(row, semesters.second, 2)
+                extractSemesterSummary(row, semesters.first, 1, headers),
+                extractSemesterSummary(row, semesters.second, 2, headers)
             ].filter(item => Object.keys(item).length > 1)
         };
 
@@ -1278,6 +1510,9 @@ function readPractices(
                 headers,
                 semesters.second
             );
+        const hours = extractHours(row, headers);
+        const controls = extractControls(row, headers);
+        const allColumns = readAllColumns(row, 'practice', semesters, headers);
 
         /*
          * Визначаємо години практики.
@@ -1309,6 +1544,24 @@ function readPractices(
             teacher,
             substitute,
 
+            sourceData: {
+                sheet: sheetName,
+                row: rowIndex + 1,
+                columns: allColumns,
+                hours,
+                summaryHours: compactHours({
+                    total: totalHours,
+                    classroom: classroomHours,
+                    selfStudy: selfStudyHours,
+                    weeks
+                }),
+                controls,
+                semesters: [
+                    { semester: semesters.first, values: semester1 },
+                    { semester: semesters.second, values: semester2 }
+                ]
+            },
+
             hours: compactHours({
                 total: totalHours,
                 classroom: classroomHours,
@@ -1331,15 +1584,15 @@ function readPractices(
 // ДЕТАЛЬНИЙ ВИВІД ДИСЦИПЛІНИ
 // =========================================================
 
-function printDiscipline(item) {
-    console.log('');
-    console.log(`    ${item.code} | ${item.name}`);
-    console.log(`      Основний викладач: ${item.teacher || '-'}`);
-    console.log(`      Дублер: ${item.substitute || '-'}`);
-    console.log(`      Тип: ${item.type}`);
+function printDiscipline(item, log = console.log) {
+    log('');
+    log(`    ${item.code} | ${item.name}`);
+    log(`      Основний викладач: ${item.teacher || '-'}`);
+    log(`      Дублер: ${item.substitute || '-'}`);
+    log(`      Тип: ${item.type}`);
 
     for (const [key, value] of Object.entries(item.hours)) {
-        console.log(`        ${key}: ${value}`);
+        log(`        ${key}: ${value}`);
     }
 }
 
@@ -1348,22 +1601,22 @@ function printDiscipline(item) {
 // ДЕТАЛЬНИЙ ВИВІД ПРАКТИКИ
 // =========================================================
 
-function printPractice(item) {
-    console.log('');
-    console.log(
+function printPractice(item, log = console.log) {
+    log('');
+    log(
         `    ${item.name}`
     );
 
-    console.log(
+    log(
         `      Основний викладач: ${item.teacher || '-'}`
     );
 
-    console.log(
+    log(
         `      Дублер: ${item.substitute || '-'}`
     );
 
     for (const [key, value] of Object.entries(item.hours)) {
-        console.log(
+        log(
             `        ${key}: ${value}`
         );
     }
@@ -1438,274 +1691,226 @@ function findExcelFile() {
 // ОСНОВНА ФУНКЦІЯ
 // =========================================================
 
-async function main() {
-    try {
-        const excelFile =
-            findExcelFile();
+export function parseStudyPlan(buffer, logger = null) {
+    if (!Buffer.isBuffer(buffer) || buffer.length === 0) {
+        throw new Error('Файл навчального плану порожній або не переданий');
+    }
 
-        const filePath =
-            path.join(
-                uploadsPath,
-                excelFile
+    const log = typeof logger === 'function' ? logger : () => {}
+
+    /*
+     * raw:false залишає форматовані значення Excel.
+     */
+    const workbook = XLSX.read(buffer, {
+        cellDates: true,
+        cellNF: false,
+        cellText: true
+    });
+
+    log(
+        'Кількість листів:',
+        workbook.SheetNames.length
+    );
+
+    log('');
+
+    /*
+     * Обробляємо КОЖЕН лист.
+     */
+
+    const plans = [];
+
+    for (
+        const sheetName
+        of workbook.SheetNames
+    ) {
+        const worksheet =
+            workbook.Sheets[
+                sheetName
+            ];
+
+        if (!worksheet) {
+            continue;
+        }
+
+        const groupName =
+            getGroupName(
+                sheetName
             );
 
-        console.log('');
-        console.log(
-            '=============================================='
+        if (!groupName) {
+            log(
+                `⚠ ${sheetName} → групу не визначено, лист все одно імпортується`
+            );
+        }
+
+        const resolvedGroupName =
+            groupName || sheetName;
+
+        /*
+         * ВАЖЛИВО:
+         *
+         * Тут розгортаємо merged cells.
+         */
+
+        const rawRows = XLSX.utils.sheet_to_json(
+            worksheet,
+            {
+                header: 1,
+                defval: '',
+                raw: false
+            }
         );
 
-        console.log(
-            'ІМПОРТ НАВЧАЛЬНОГО ПЛАНУ'
-        );
+        const rows =
+            buildExpandedRows(
+                workbook,
+                worksheet
+            );
 
-        console.log(
-            '=============================================='
-        );
+        /*
+         * Будуємо заголовки.
+         */
 
-        console.log('');
+        const disciplineHeaders = buildColumnHeaders(rows, 2, 6);
+        const practiceHeaders = buildColumnHeaders(rows, 21, 24);
 
-        console.log(
-            'Файл:',
-            excelFile
+        /*
+         * Читаємо дисципліни
+         * з УСЬОГО листа.
+         */
+
+        const disciplines =
+            readDisciplines(
+                rawRows,
+                sheetName,
+                disciplineHeaders
+            );
+
+        /*
+         * Читаємо практики
+         * з УСЬОГО листа.
+         */
+
+        const practices =
+            readPractices(
+                rawRows,
+                sheetName,
+                practiceHeaders
+            );
+
+        /*
+         * Один результат для всіх елементів плану.
+         * ОК, ВК, звичайні дисципліни та практики не губляться
+         * і можуть бути відображені однаково на фронтенді.
+         */
+        plans.push({
+            sheet: sheetName,
+            group: resolvedGroupName,
+            course: getSemesterPair(sheetName).first
+                ? Number(clean(sheetName).split('-')[0])
+                : null,
+            semesters: getSemesterPair(sheetName),
+            items: [
+                ...disciplines,
+                ...practices
+            ]
+        });
+
+        log(
+            `✓ ${sheetName.padEnd(8)} → ${resolvedGroupName.padEnd(15)} → ${disciplines.length} дисципл. → ${practices.length} практик`
         );
 
         /*
-         * raw:false залишає форматовані
-         * значення Excel.
+         * ==================================================
+         * ДИСЦИПЛІНИ
+         * ==================================================
          */
 
-        const workbook =
-            XLSX.readFile(
-                filePath,
-                {
-                    cellDates: true,
-                    cellNF: false,
-                    cellText: true
-                }
-            );
-
-        console.log(
-            'Кількість листів:',
-            workbook.SheetNames.length
-        );
-
-        console.log('');
-
-        /*
-         * Обробляємо КОЖЕН лист.
-         */
-
-        const plans = [];
-
-        for (
-            const sheetName
-            of workbook.SheetNames
+        if (
+            disciplines.length > 0
         ) {
-            const worksheet =
-                workbook.Sheets[
-                    sheetName
-                ];
-
-            if (!worksheet) {
-                continue;
-            }
-
-            const groupName =
-                getGroupName(
-                    sheetName
-                );
-
-            if (!groupName) {
-                console.log(
-                    `⚠ ${sheetName} → групу не визначено, лист все одно імпортується`
-                );
-            }
-
-            const resolvedGroupName =
-                groupName || sheetName;
-
-            /*
-             * ВАЖЛИВО:
-             *
-             * Тут розгортаємо merged cells.
-             */
-
-            const rawRows = XLSX.utils.sheet_to_json(
-                worksheet,
-                {
-                    header: 1,
-                    defval: '',
-                    raw: false
-                }
+            log(
+                '  Дисципліни:'
             );
 
-            const rows =
-                buildExpandedRows(
-                    workbook,
-                    worksheet
-                );
-
-            /*
-             * Будуємо заголовки.
-             */
-
-            const headers =
-                buildColumnHeaders(
-                    rows
-                );
-
-            /*
-             * Читаємо дисципліни
-             * з УСЬОГО листа.
-             */
-
-            const disciplines =
-                readDisciplines(
-                    rawRows,
-                    sheetName,
-                    headers
-                );
-
-            /*
-             * Читаємо практики
-             * з УСЬОГО листа.
-             */
-
-            const practices =
-                readPractices(
-                    rawRows,
-                    sheetName,
-                    headers
-                );
-
-            /*
-             * Один результат для всіх елементів плану.
-             * ОК, ВК, звичайні дисципліни та практики не губляться
-             * і можуть бути відображені однаково на фронтенді.
-             */
-            plans.push({
-                sheet: sheetName,
-                group: resolvedGroupName,
-                course: getSemesterPair(sheetName).first
-                    ? Number(clean(sheetName).split('-')[0])
-                    : null,
-                semesters: getSemesterPair(sheetName),
-                items: [
-                    ...disciplines,
-                    ...practices
-                ]
-            });
-
-            console.log(
-                `✓ ${sheetName.padEnd(8)} → ${resolvedGroupName.padEnd(15)} → ${disciplines.length} дисципл. → ${practices.length} практик`
-            );
-
-            /*
-             * ==================================================
-             * ДИСЦИПЛІНИ
-             * ==================================================
-             */
-
-            if (
-                disciplines.length > 0
+            for (
+                const item
+                of disciplines
             ) {
-                console.log(
-                    '  Дисципліни:'
-                );
-
-                for (
-                    const item
-                    of disciplines
-                ) {
-                    printDiscipline(
-                        item
-                    );
-                }
-            }
-
-            /*
-             * ==================================================
-             * ПРАКТИКИ
-             * ==================================================
-             */
-
-            if (
-                practices.length > 0
-            ) {
-                console.log('');
-                console.log(
-                    '  Практики:'
-                );
-
-                for (
-                    const item
-                    of practices
-                ) {
-                    printPractice(
-                        item
-                    );
-                }
-            }
-
-            console.log('');
-
-            /*
-             * Окремо показуємо коди.
-             *
-             * Це дуже зручно для перевірки:
-             *
-             * ОК5
-             * ОК7
-             * ОК24
-             * ВК2
-             */
-
-            if (
-                disciplines.length > 0
-            ) {
-                console.log(
-                    '  Коди дисциплін:'
-                );
-
-                console.log(
-                    '   ',
-                    disciplines
-                        .map(
-                            item =>
-                                item.code
-                        )
-                        .join(', ')
-                );
-
-                console.log('');
+                printDiscipline(item, log);
             }
         }
 
-        const outputPath = path.join(
-            __dirname,
-            'parsed-plan.json'
-        );
+        /*
+         * ==================================================
+         * ПРАКТИКИ
+         * ==================================================
+         */
 
-        fs.writeFileSync(
-            outputPath,
-            JSON.stringify(plans, null, 4),
-            'utf8'
-        );
+        if (
+            practices.length > 0
+        ) {
+            log('');
+            log(
+                '  Практики:'
+            );
 
+            for (
+                const item
+                of practices
+            ) {
+                printPractice(item, log);
+            }
+        }
+
+        log('');
+
+        /*
+         * Окремо показуємо коди.
+         *
+         * Це дуже зручно для перевірки:
+         *
+         * ОК5
+         * ОК7
+         * ОК24
+         * ВК2
+         */
+
+        if (
+            disciplines.length > 0
+        ) {
+            log(
+                '  Коди дисциплін:'
+            );
+
+            log(
+                '   ',
+                disciplines
+                    .map(
+                        item =>
+                            item.code
+                    )
+                    .join(', ')
+            );
+
+            log('');
+        }
+    }
+
+    return plans;
+}
+
+async function main() {
+    try {
+        const excelFile = findExcelFile();
+        const filePath = path.join(uploadsPath, excelFile);
+        const plans = parseStudyPlan(fs.readFileSync(filePath), console.log);
+        const outputPath = path.join(__dirname, 'parsed-plan.json');
+
+        fs.writeFileSync(outputPath, JSON.stringify(plans, null, 4), 'utf8');
         console.log('JSON збережено:', outputPath);
-
-        console.log(
-            '=============================================='
-        );
-
-        console.log(
-            'ІМПОРТ ЗАВЕРШЕНО'
-        );
-
-        console.log(
-            '=============================================='
-        );
-
+        console.log('ІМПОРТ ЗАВЕРШЕНО');
     } catch (error) {
         console.error('');
         console.error(
@@ -1718,5 +1923,6 @@ async function main() {
     }
 }
 
-
-main();
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+    main();
+}

@@ -15,6 +15,9 @@ import taskRoutes from './routes/taskRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 import scheduleRoutes from './routes/scheduleRoutes.js'
 import statementRoutes from './routes/statementRoutes.js'
+import contingentReportRoutes from './routes/contingentReportRoutes.js'
+import certificateRoutes from './routes/certificateRoutes.js'
+import individualPlanRoutes from './routes/individualPlanRoutes.js'
 import { initializeTaskData } from './controllers/taskController.js'
 import { initializeAuthData } from './controllers/authController.js'
 import { startTelegramBot, startTaskReminders } from './telegramBot.js'
@@ -561,6 +564,21 @@ app.use(
 app.use(
   '/api/statements',
   statementRoutes
+)
+
+app.use(
+  '/api/contingent-reports',
+  contingentReportRoutes
+)
+
+app.use(
+  '/api/certificates',
+  certificateRoutes
+)
+
+app.use(
+  '/api/individual-plans',
+  individualPlanRoutes
 )
 
 app.use(

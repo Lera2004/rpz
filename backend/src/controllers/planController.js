@@ -2,6 +2,7 @@ import fs from 'fs/promises'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import pool from '../config/database.js'
+import { ensurePlanSourceDataColumn } from '../utils/planSchema.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -31,6 +32,10 @@ export async function getPlans(req, res) {
   }
 }
 
+export async function getPlanData(query) {
+  return getPlansFromDatabase(query)
+}
+
 export async function updatePlanDiscipline(req, res) {
   try {
     const id = Number(req.params.id)
@@ -43,7 +48,9 @@ export async function updatePlanDiscipline(req, res) {
       course_projects_hours: req.body.course_projects_hours,
       calculation_graphic_hours: req.body.calculation_graphic_hours,
       field_training_hours: req.body.field_training_hours,
-      control_type: req.body.control_type, exam: req.body.exam, control_works: req.body.control_works,
+      control_type: req.body.control_type, credits: req.body.credits,
+      differential_credit: req.body.differential_credit,
+      exam: req.body.exam, control_works: req.body.control_works,
       teacher_id: req.body.teacher_id, backup_teacher_id: req.body.backup_teacher_id
     }
     const updates = Object.entries(fields).filter(([, value]) => value !== undefined)
@@ -69,8 +76,10 @@ export async function updatePlanDiscipline(req, res) {
 }
 
 async function getPlansFromDatabase(query) {
+  await ensurePlanSourceDataColumn(pool)
+
   const [latestPlan] = await pool.query(`
-    SELECT id
+    SELECT id, name
     FROM study_plans
     ORDER BY id DESC
     LIMIT 1
@@ -115,8 +124,11 @@ async function getPlansFromDatabase(query) {
       pd.calculation_graphic_hours,
       pd.field_training_hours,
       pd.control_type,
+      pd.credits,
+      pd.differential_credit,
       pd.exam,
       pd.control_works,
+      pd.source_data,
       d.code,
       d.name,
       t.full_name AS teacher,
@@ -181,12 +193,30 @@ async function getPlansFromDatabase(query) {
         code: row.code?.startsWith('PRACTICE_') ? '' : row.code,
         name: row.name,
         type,
+        section: '',
         teacher: row.teacher || '',
         substitute: row.substitute || '',
         hours: {},
-        semesters: []
+        semesters: [],
+        sourceData: []
       }
       plan.items.push(item)
+    }
+
+    const sourceData = row.source_data
+      ? typeof row.source_data === 'string' ? JSON.parse(row.source_data) : row.source_data
+      : null
+    if (!item.section && sourceData?.section) {
+      item.section = sourceData.section
+    }
+    if (sourceData && !item.sourceData.some(value => JSON.stringify(value) === JSON.stringify(sourceData))) {
+      item.sourceData.push(sourceData)
+    }
+    if (item.type === 'practice' && sourceData?.summaryHours) {
+      item.practiceHours = sourceData.summaryHours
+    } else if (item.type !== 'practice') {
+      const planHours = sourceDataPlanHours(sourceData)
+      if (planHours) item.planHours = planHours
     }
 
     const semester = {}
@@ -203,8 +233,29 @@ async function getPlansFromDatabase(query) {
     addDbValue(semester, 'calculationWork', row.calculation_graphic_hours)
     addDbValue(semester, 'fieldTraining', row.field_training_hours)
     addDbValue(semester, 'controlType', row.control_type)
+    addDbValue(semester, 'credits', row.credits)
+    addDbValue(semester, 'differentialCredit', row.differential_credit)
     addDbValue(semester, 'exams', row.exam)
     addDbValue(semester, 'controlWorks', row.control_works)
+    const sourceSemesterFields = sourceDataSemesterFields(
+      sourceData,
+      row.semester,
+      item.type === 'practice'
+    )
+    if (sourceSemesterFields) {
+      for (const key of [
+        'courseWork',
+        'calculationWork',
+        'controlType',
+        'credits',
+        'differentialCredit',
+        'exams',
+        'controlWorks'
+      ]) {
+        delete semester[key]
+      }
+      Object.assign(semester, sourceSemesterFields)
+    }
 
     if (Object.keys(semester).length > 1) {
       item.semesters.push(semester)
@@ -217,6 +268,10 @@ async function getPlansFromDatabase(query) {
     ...plan,
     items: plan.items.map(({ key, ...item }) => item)
   }))
+
+  if (latestPlan[0].name?.startsWith('Робочий план ')) {
+    return result
+  }
 
   // Після видалення викладача з БД teacher_id стає NULL, але прізвище
   // залишається у вихідному навчальному плані. Повертаємо його у /plans,
@@ -273,6 +328,7 @@ async function enrichTeachersFromSource(plans) {
       return {
         ...item,
         name: sourceItem?.name || item.name,
+        section: item.section || sourceItem?.section || '',
         hours: sourceItem?.hours || item.hours,
         semesters,
         teacher: item.teacher || sourceItem?.teacher || '',
@@ -298,4 +354,82 @@ function addDbValue(target, key, value) {
   target[key] = Number.isNaN(numeric) || typeof value === 'string' && value.trim() !== ''
     ? value
     : numeric
+}
+
+function sourceDataPlanHours(sourceData) {
+  if (sourceData?.summaryHours) return sourceData.summaryHours
+  if (!Array.isArray(sourceData?.columns)) return null
+
+  const fields = [[2, 'plan'], [3, 'previousYear'], [4, 'currentYear']]
+  const hours = {}
+
+  for (const [index, key] of fields) {
+    const cell = sourceData.columns.find(column => Number(column.index) === index)
+    if (cell?.value === undefined || cell.value === null || cell.value === '') continue
+
+    const value = String(cell.value).trim()
+    const numeric = Number(value.replace(',', '.'))
+    hours[key] = Number.isNaN(numeric) ? value : numeric
+  }
+
+  return Object.keys(hours).length ? hours : null
+}
+
+function sourceDataSemesterFields(sourceData, semesterNumber, isPractice) {
+  const sourceSemester = sourceData?.semesters?.find(
+    value => String(value.semester) === String(semesterNumber)
+  )
+  const values = sourceSemester?.values
+  if (!Array.isArray(values) || !values.some(value => value.header)) return null
+
+  const secondSemester = Number(semesterNumber) % 2 === 0
+  const start = isPractice
+    ? secondSemester ? 29 : 22
+    : secondSemester ? 18 : 5
+  const end = isPractice
+    ? secondSemester ? 35 : 28
+    : secondSemester ? 31 : 17
+  const headerField = header => {
+    const text = String(header || '').toLocaleLowerCase('uk-UA')
+    if (text.includes('диференц') || /диф\.?\s*залік/.test(text)) return 'differentialCredit'
+    if (text.includes('залік')) return 'credits'
+    if (text.includes('екзамен') || text.includes('іспит')) return 'exams'
+    if (text.includes('контрольні роботи')) return 'controlWorks'
+    if (text.includes('курсов')) return 'courseWork'
+    if (text.includes('розрахунк') || text.includes('графічн')) return 'calculationWork'
+    return null
+  }
+
+  const fields = {}
+  for (const value of values) {
+    if (Number(value.index) < start || Number(value.index) > end) continue
+    const key = headerField(value.header)
+    if (!key || value.value === '' || value.value === null || value.value === undefined) continue
+    if (key === 'courseWork' || key === 'calculationWork') {
+      const numeric = Number(String(value.value).replace(',', '.'))
+      if (Number.isFinite(numeric) && numeric !== 0) {
+        fields[key] = numeric
+      } else {
+        const controlKey = controlFieldFromSourceValue(value.value)
+        if (controlKey && fields[controlKey] === undefined) fields[controlKey] = value.value
+      }
+    } else {
+      fields[key] = value.value
+    }
+
+    const controlKey = controlFieldFromSourceValue(value.value)
+    if (controlKey && fields[controlKey] === undefined) fields[controlKey] = value.value
+  }
+
+  return fields
+}
+
+function controlFieldFromSourceValue(value) {
+  const text = String(value || '')
+    .toLocaleLowerCase('uk-UA')
+    .replace(/[.\s-]+/g, '')
+  if (text.includes('диференц') || text === 'диф' || text === 'дифзалік') return 'differentialCredit'
+  if (text === 'екз' || text === 'екзамен') return 'exams'
+  if (text === 'зв' || text === 'зал' || text === 'залік') return 'credits'
+  return null
 }

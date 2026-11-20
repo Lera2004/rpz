@@ -95,6 +95,25 @@ function verifyToken(token) {
   return parsed
 }
 
+export async function requireAdmin(req, res, next) {
+  try {
+    const authHeader = req.headers.authorization || ''
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : ''
+    if (!token) return res.status(401).json({ message: 'Токен не надано.' })
+
+    const payload = verifyToken(token)
+    const [rows] = await pool.query('SELECT role FROM users WHERE id = ? LIMIT 1', [payload.id])
+    if (!rows.length) return res.status(401).json({ message: 'Користувача не знайдено.' })
+    if (rows[0].role !== 'admin') return res.status(403).json({ message: 'Недостатньо прав для редагування студента.' })
+
+    req.user = { id: payload.id, role: rows[0].role }
+    next()
+  } catch (error) {
+    console.error('ПОМИЛКА ПЕРЕВІРКИ ПРАВ АДМІНІСТРАТОРА:', error)
+    res.status(401).json({ message: 'Сесія недійсна або завершилась.' })
+  }
+}
+
 export async function ensureAuthTables() {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (

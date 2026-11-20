@@ -13,6 +13,9 @@ import ScheduleView from '../views/ScheduleView.vue'
 import TasksView from '../views/TasksView.vue'
 import LoginView from '../views/LoginView.vue'
 import UsersView from '../views/UsersView.vue'
+import ContingentReportsView from '../views/ContingentReportsView.vue'
+import CertificatesView from '../views/CertificatesView.vue'
+import IndividualPlansView from '../views/IndividualPlansView.vue'
 
 const routes = [
   {
@@ -34,6 +37,21 @@ const routes = [
     path: '/groups',
     name: 'groups',
     component: GroupsView
+  },
+  {
+    path: '/contingent-reports',
+    name: 'contingent-reports',
+    component: ContingentReportsView
+  },
+  {
+    path: '/certificates',
+    name: 'certificates',
+    component: CertificatesView
+  },
+  {
+    path: '/individual-plans',
+    name: 'individual-plans',
+    component: IndividualPlansView
   },
   {
     path: '/plans',

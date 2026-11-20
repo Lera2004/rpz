@@ -27,6 +27,29 @@
           />
           <span>Імпорт CSV</span>
         </label>
+        <label class="import-button" :class="{ disabled: photoImportLoading }">
+          <input
+            ref="photoArchiveInput"
+            type="file"
+            accept=".zip,application/zip"
+            multiple
+            :disabled="photoImportLoading"
+            @change="handlePhotoArchiveChange"
+            hidden
+          />
+          <span>{{ photoImportLoading ? 'Завантаження фото...' : 'Імпорт фото (ZIP)' }}</span>
+        </label>
+        <label class="import-button" :class="{ disabled: contactsImportLoading }">
+          <input
+            ref="contactsFileInput"
+            type="file"
+            accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+            :disabled="contactsImportLoading"
+            @change="handleContactsFileChange"
+            hidden
+          />
+          <span>{{ contactsImportLoading ? 'Завантаження контактів...' : 'Імпорт контактів (Excel)' }}</span>
+        </label>
       </div>
     </div>
 
@@ -34,8 +57,38 @@
       {{ importMessage }}
     </div>
 
+    <div v-if="photoImportMessage" class="import-message">
+      {{ photoImportMessage }}
+    </div>
+
+    <details v-if="unmatchedPhotoStudents.length" class="unmatched-import-list">
+      <summary>Студенти без зіставлених фото ({{ unmatchedPhotoStudents.length }})</summary>
+      <ul>
+        <li v-for="(student, index) in unmatchedPhotoStudents" :key="`${student.applicant}-${student.group || ''}-${index}`">
+          {{ student.applicant }}<span v-if="student.group"> — {{ student.group }}</span>
+        </li>
+      </ul>
+    </details>
+
+    <div v-if="contactsImportMessage" class="import-message">
+      {{ contactsImportMessage }}
+    </div>
+
+    <details v-if="unmatchedContactStudents.length" class="unmatched-import-list">
+      <summary>Студенти, яких не зіставлено під час імпорту контактів ({{ unmatchedContactStudents.length }})</summary>
+      <ul>
+        <li v-for="(student, index) in unmatchedContactStudents" :key="`${student.applicant}-${index}`">
+          {{ student.applicant }} — {{ student.reason }}
+        </li>
+      </ul>
+    </details>
+
     <div v-if="importLoading" class="loading compact">
       Імпорт файлу...
+    </div>
+
+    <div v-if="photoImportLoading" class="loading compact">
+      Обробка ZIP-архівів та зіставлення фото зі студентами...
     </div>
 
     <!-- ================================= -->
@@ -84,8 +137,10 @@
         </div>
         <div v-if="!academicLeaveApplicantsList.length" class="empty-state compact-empty">Немає студентів</div>
         <div v-for="student in academicLeaveApplicantsList" :key="student.id" class="status-student-row">
-          <div><strong>{{ student.applicant || '—' }}</strong><span>{{ student.group_name || 'Без групи' }} · {{ student.specialty || '—' }} · {{ student.course || '—' }} курс · {{ student.funding_source || '—' }}</span></div>
-          <button class="edit-button small" type="button" @click="openApplicantEditor(student.group_id, student)">Редагувати</button>
+          <div>
+            <button class="student-name-button" type="button" @click="openStudentDetails(student)">{{ student.applicant || '—' }}</button>
+            <span>{{ student.group_name || 'Без групи' }} · {{ student.specialty || '—' }} · {{ student.course || '—' }} курс · {{ student.funding_source || '—' }}</span>
+          </div>
         </div>
       </div>
       <div class="status-list-panel dismissed-panel">
@@ -95,40 +150,46 @@
         </div>
         <div v-if="!dismissedApplicantsList.length" class="empty-state compact-empty">Немає студентів</div>
         <div v-for="student in dismissedApplicantsList" :key="student.id" class="status-student-row">
-          <div><strong>{{ student.applicant || '—' }}</strong><span>{{ student.group_name || 'Без групи' }} · {{ student.specialty || '—' }} · {{ student.course || '—' }} курс · {{ student.funding_source || '—' }}</span></div>
+          <div><button class="student-name-button" type="button" @click="openStudentDetails(student)">{{ student.applicant || '—' }}</button><span>{{ student.group_name || 'Без групи' }} · {{ student.specialty || '—' }} · {{ student.course || '—' }} курс · {{ student.funding_source || '—' }}</span></div>
           <button class="edit-button small" type="button" @click="openApplicantEditor(student.group_id, student)">Редагувати</button>
         </div>
       </div>
     </div>
 
     <!-- ================================= -->
-    <!-- Пошук та фільтри -->
+    <!-- Фільтри -->
     <!-- ================================= -->
 
     <div class="toolbar">
       <div class="filter-group">
-        <select v-model="selectedSpecialty" @change="applyGroupFilter">
-          <option value="all">Всі спеціальності</option>
-          <option v-for="specialty in specialtyOptions" :key="specialty" :value="specialty">
-            {{ specialty }}
-          </option>
-        </select>
+        <label class="filter-control">
+          <span>Курс</span>
+          <select v-model="courseFilter" @change="applyGroupFilter">
+            <option value="all">Всі курси</option>
+            <option v-for="course in courseOptions" :key="course" :value="course">
+              {{ course }} курс
+            </option>
+          </select>
+        </label>
 
-        <select v-model="courseFilter" @change="applyGroupFilter">
-          <option value="all">Всі курси</option>
-          <option v-for="course in courseOptions" :key="course" :value="course">
-            {{ course }} курс
-          </option>
-        </select>
+        <label class="filter-control">
+          <span>Форма фінансування</span>
+          <select v-model="fundingFilter" @change="applyGroupFilter">
+            <option value="all">Усі форми</option>
+            <option value="budget">Є бюджетні місця</option>
+            <option value="contract">Є контрактні місця</option>
+          </select>
+        </label>
 
-        <div class="student-search-box">
+        <label class="filter-control student-search-box">
+          <span>Пошук студента</span>
           <input
             v-model="studentSearchQuery"
             type="text"
             placeholder="Пошук студента за ПІБ"
             @input="searchStudentByName"
           />
-        </div>
+        </label>
 
         <button v-if="hasActiveFilters" class="reset-button" type="button" @click="resetFilters">
           Скинути
@@ -136,6 +197,9 @@
       </div>
 
     </div>
+    <p class="filter-results-count">
+      Показано груп: <strong>{{ groups.length }}</strong> із {{ allGroups.length }}
+    </p>
 
     <div v-if="studentSearchResults.length" class="student-search-results">
       <h3>Результати пошуку</h3>
@@ -145,7 +209,7 @@
           :key="match.id"
           type="button"
           class="student-search-item"
-          @click="focusApplicant(match)"
+          @click="openStudentDetails(match)"
         >
           <strong>{{ match.applicant }}</strong>
           <span>{{ match.group_name || 'Без групи' }}</span>
@@ -158,7 +222,7 @@
       <div class="ungrouped-list">
         <div v-for="student in filteredUngroupedApplicants" :key="student.id" class="ungrouped-row">
           <div class="ungrouped-main">
-            <strong>{{ student.applicant || '—' }}</strong>
+            <button class="student-name-button" type="button" @click="openStudentDetails(student)">{{ student.applicant || '—' }}</button>
             <span>{{ student.funding_source || '—' }} · {{ student.specialty || '—' }}</span>
           </div>
           <div class="ungrouped-actions">
@@ -204,6 +268,34 @@
           </tr>
         </tbody>
       </table>
+
+      <section v-if="combinedSpecialtySummaries.length" class="combined-summary-section">
+        <div class="combined-summary-heading">
+          <div>
+            <span class="combined-summary-eyebrow">Зведена статистика</span>
+            <h3>Разом за спорідненими спеціальностями</h3>
+          </div>
+          <span class="combined-summary-count">{{ combinedSpecialtySummaries.length }} напрямки</span>
+        </div>
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th>Спеціальність</th>
+              <th>Студентів</th>
+              <th>Бюджет</th>
+              <th>Контракт</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="summary in combinedSpecialtySummaries" :key="summary.specialty">
+              <td>{{ summary.specialty }}</td>
+              <td>{{ summary.students_count }}</td>
+              <td>{{ summary.budget_count }}</td>
+              <td>{{ summary.contract_count }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </div>
 
 
@@ -297,7 +389,7 @@
                 <button class="group-toggle" @click.stop="loadGroupApplicants(group)">
                   <span>{{ expandedGroupId === group.id ? '▾' : '▸' }}</span>
                   <strong>{{ group.name }}</strong>
-                  <span v-if="Number(group.academic_leave_count || 0) > 0" class="academic-badge">Є академвідпустка: {{ group.academic_leave_count }}</span>
+                  <span v-if="groupDisplayStats(group).academic_leave_count > 0" class="academic-badge">Є академвідпустка: {{ groupDisplayStats(group).academic_leave_count }}</span>
                 </button>
               </td>
 
@@ -310,15 +402,15 @@
               </td>
 
               <td>
-                {{ group.budget_count ?? 0 }} <small>(активних: {{ group.active_budget_count ?? 0 }})</small>
+                {{ groupDisplayStats(group).budget_count }} <small>(активних: {{ groupDisplayStats(group).active_budget_count }})</small>
               </td>
 
               <td>
-                {{ group.contract_count ?? 0 }} <small>(активних: {{ group.active_contract_count ?? 0 }})</small>
+                {{ groupDisplayStats(group).contract_count }} <small>(активних: {{ groupDisplayStats(group).active_contract_count }})</small>
               </td>
 
               <td>
-                {{ group.all_students_count ?? group.applicant_count ?? 0 }} <small>(активних: {{ group.active_students_count ?? 0 }})</small>
+                {{ groupDisplayStats(group).all_students_count }} <small>(активних: {{ groupDisplayStats(group).active_students_count }})</small>
               </td>
 
               <td class="actions">
@@ -335,7 +427,12 @@
             <tr v-if="expandedGroupId === group.id">
               <td colspan="8" class="expanded-row">
                 <div class="expanded-content">
-                  <h3>Студенти групи {{ group.name }}</h3>
+                  <h3>
+                    Студенти групи {{ group.name }}
+                    <span class="class-teacher-label">
+                      Класний керівник: {{ group.class_teacher_name || 'не призначено' }}
+                    </span>
+                  </h3>
 
                   <div v-if="loadingApplicants && expandedGroupId === group.id" class="loading">
                     Завантаження студентів...
@@ -362,14 +459,14 @@
                             </tr>
                               <tr v-for="(applicant, ai) in regularApplicants(group.id)" :key="applicant.id || ai">
                               <td>{{ ai + 1 }}</td>
-                              <td>{{ applicant.applicant || '—' }}</td>
+                              <td><button class="student-name-button" type="button" @click="openStudentDetails(applicant)">{{ applicant.applicant || '—' }}</button></td>
                               <td>{{ applicant.funding_source || '—' }}</td>
                               <td>{{ applicant.specialty || '—' }}</td>
                               <td>{{ applicant.category_code || '—' }}</td>
                               <td>
                                 <div class="inline-actions">
                                   <button
-                                    class="edit-button small"
+                                    class="edit-button small academic-leave-edit"
                                     @click.prevent="openApplicantEditor(group.id, applicant)"
                                   >
                                     Редагувати
@@ -403,7 +500,7 @@
                               </tr>
                               <tr v-for="(applicant, ai) in academicLeaveApplicants(group.id)" :key="applicant.id || ai">
                                 <td>{{ ai + 1 }}</td>
-                                <td>{{ applicant.applicant || '—' }}</td>
+                                <td><button class="student-name-button" type="button" @click="openStudentDetails(applicant)">{{ applicant.applicant || '—' }}</button></td>
                                 <td>{{ applicant.funding_source || '—' }}</td>
                                 <td>{{ applicant.specialty || '—' }}</td>
                                 <td>{{ applicant.category_code || '—' }}</td>
@@ -524,7 +621,6 @@
           <!-- Курс -->
 
           <div class="form-group">
-
             <label>
               Курс
             </label>
@@ -537,6 +633,16 @@
               max="4"
             />
 
+          </div>
+
+          <div v-if="editingId" class="form-group">
+            <label>Класний керівник</label>
+            <select v-model="form.class_teacher_id">
+              <option value="">Не призначено</option>
+              <option v-for="teacher in teachers" :key="teacher.id" :value="String(teacher.id)">
+                {{ teacher.full_name }}
+              </option>
+            </select>
           </div>
 
 
@@ -629,6 +735,126 @@
       </div>
     </div>
 
+    <div v-if="showApplicantDetails && selectedApplicantDetails" class="modal-background" @click.self="closeStudentDetails">
+      <section class="modal student-details-modal" role="dialog" aria-modal="true" aria-labelledby="student-details-title">
+        <div class="modal-header">
+          <h2 id="student-details-title">{{ selectedApplicantDetails.applicant || 'Інформація про студента' }}</h2>
+          <div class="student-modal-actions">
+            <button
+              v-if="isAdmin"
+              class="student-edit-button"
+              type="button"
+              @click="toggleManualDetailsEditor"
+            >
+              {{ isEditingManualDetails ? 'Скасувати редагування' : 'Редагувати контакти' }}
+            </button>
+            <button class="close-button" type="button" aria-label="Закрити" @click="closeStudentDetails">×</button>
+          </div>
+        </div>
+
+        <div class="student-details-layout">
+          <aside class="student-photo-wrap">
+            <img
+              v-if="studentPhotoUrl"
+              :src="studentPhotoUrl"
+              :alt="selectedApplicantDetails.applicant || 'Фото студента'"
+            />
+            <div v-else class="student-photo-placeholder">Фото відсутнє</div>
+            <template v-if="isAdmin">
+              <input
+                ref="manualPhotoInput"
+                class="visually-hidden"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                @change="uploadManualPhoto"
+              />
+              <button
+                class="student-photo-button"
+                type="button"
+                :disabled="uploadingManualPhoto"
+                @click="manualPhotoInput?.click()"
+              >
+                {{ uploadingManualPhoto ? 'Завантаження фото...' : (studentPhotoUrl ? 'Замінити фото' : 'Додати фото') }}
+              </button>
+            </template>
+          </aside>
+
+          <div class="student-information">
+            <div v-if="!Object.keys(importedStudentData).length" class="student-import-notice">
+              Додаткові поля ще не збережені для цього студента. Повторно імпортуйте актуальний CSV, щоб завантажити їх.
+            </div>
+            <p v-if="manualDetailsError" class="manual-student-error">{{ manualDetailsError }}</p>
+            <p v-if="manualDetailsSuccess" class="manual-student-success">{{ manualDetailsSuccess }}</p>
+
+            <section class="student-info-section">
+              <h3>Основна інформація</h3>
+              <dl class="student-details-list">
+                <div v-for="field in studentMainFields" :key="field.label" class="student-detail-row">
+                  <dt>{{ field.label }}</dt>
+                  <dd v-if="isWebLink(field.value)">
+                    <a :href="field.value" target="_blank" rel="noopener noreferrer">{{ field.value }}</a>
+                  </dd>
+                  <dd v-else>{{ field.value }}</dd>
+                </div>
+              </dl>
+            </section>
+
+            <section v-if="isEditingManualDetails && isAdmin" class="manual-student-editor">
+              <h3>Редагування контактів і категорії</h3>
+              <form @submit.prevent="saveManualStudentDetails">
+                <label class="manual-student-field">
+                  <span>Пільгова категорія</span>
+                  <input v-model="manualStudentForm.benefit_category" type="text" maxlength="255" />
+                </label>
+                <label
+                  v-for="field in editableContactFields"
+                  :key="field.key"
+                  class="manual-student-field"
+                >
+                  <span>{{ field.label }}</span>
+                  <textarea
+                    v-model="manualStudentForm.contacts[field.key]"
+                    rows="2"
+                    maxlength="2000"
+                  />
+                </label>
+                <div class="manual-student-actions">
+                  <button type="button" class="manual-cancel-button" @click="cancelManualDetailsEditor">Скасувати</button>
+                  <button type="submit" class="manual-save-button" :disabled="savingManualDetails">
+                    {{ savingManualDetails ? 'Збереження...' : 'Зберегти контакти' }}
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            <details v-if="studentContactFields.length" class="student-contacts-disclosure">
+              <summary>Контакти студента</summary>
+              <dl class="student-details-list">
+                <div v-for="field in studentContactFields" :key="field.label" class="student-detail-row">
+                  <dt>{{ field.label }}</dt>
+                  <dd v-if="isWebLink(field.value)">
+                    <a :href="field.value" target="_blank" rel="noopener noreferrer">{{ field.value }}</a>
+                  </dd>
+                  <dd v-else>{{ field.value }}</dd>
+                </div>
+              </dl>
+            </details>
+
+            <details class="student-contacts-disclosure">
+              <summary>Контакти батьків</summary>
+              <dl v-if="studentParentFields.length" class="student-details-list">
+                <div v-for="field in studentParentFields" :key="field.label" class="student-detail-row">
+                  <dt>{{ field.label }}</dt>
+                  <dd>{{ field.value }}</dd>
+                </div>
+              </dl>
+              <p v-else class="student-contacts-empty">Контактні дані батьків не імпортовані.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+    </div>
+
     <div v-if="showApplicantForm" class="modal-background" @click.self="closeApplicantForm">
       <div class="modal applicant-modal">
         <div class="modal-header">
@@ -645,9 +871,11 @@
           <div class="form-group">
             <label>Група</label>
             <select v-model="applicantForm.group_id">
-              <option v-for="group in allGroups" :key="group.id" :value="group.id">
-                {{ group.name }}
-              </option>
+              <optgroup v-for="course in groupsByCourse" :key="course.label" :label="course.label">
+                <option v-for="group in course.groups" :key="group.id" :value="group.id">
+                  {{ group.name }}
+                </option>
+              </optgroup>
             </select>
           </div>
 
@@ -718,6 +946,25 @@ import api from '../services/api.js'
 
 const allGroups = ref([])
 const groups = ref([])
+const teachers = ref([])
+const groupsByCourse = computed(() => {
+  const grouped = new Map()
+  for (const group of allGroups.value) {
+    const courseLabel = group.course ? `${group.course} курс` : 'Без курсу'
+    if (!grouped.has(courseLabel)) grouped.set(courseLabel, [])
+    grouped.get(courseLabel).push(group)
+  }
+  return [...grouped.entries()]
+    .sort(([courseA], [courseB]) => {
+      if (courseA === 'Без курсу') return 1
+      if (courseB === 'Без курсу') return -1
+      return Number.parseInt(courseA, 10) - Number.parseInt(courseB, 10)
+    })
+    .map(([label, courseGroups]) => ({
+      label,
+      groups: courseGroups.sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'uk'))
+    }))
+})
 
 const loading = ref(false)
 
@@ -728,6 +975,14 @@ const errorMessage = ref('')
 const importMessage = ref('')
 const importLoading = ref(false)
 const fileInput = ref(null)
+const photoArchiveInput = ref(null)
+const contactsFileInput = ref(null)
+const photoImportLoading = ref(false)
+const photoImportMessage = ref('')
+const unmatchedPhotoStudents = ref([])
+const contactsImportLoading = ref(false)
+const contactsImportMessage = ref('')
+const unmatchedContactStudents = ref([])
 
 const expandedGroupId = ref(null)
 const applicantsByGroup = ref({})
@@ -748,14 +1003,81 @@ const specialtySummaryTotal = computed(() => {
   )
 })
 
-const searchQuery = ref('')
-const selectedSpecialty = ref('all')
+const combinedSpecialtySummaries = computed(() => {
+  const families = [
+    {
+      key: '121/F2 Інженерія програмного забезпечення',
+      label: '121 / F2 Інженерія програмного забезпечення'
+    },
+    {
+      key: '171/G5',
+      label: '171 / G5 Електроніка, електронні комунікації, приладобудування та радіотехніка'
+    }
+  ]
+
+  return families.flatMap((family) => {
+    const matchingSummaries = (specialtySummaries.value || []).filter(
+      (summary) => getSpecialtyFamilyKey(summary.specialty) === family.key
+    )
+    if (!matchingSummaries.length) return []
+
+    return [{
+      specialty: family.label,
+      students_count: matchingSummaries.reduce((total, summary) => total + (Number(summary.students_count) || 0), 0),
+      budget_count: matchingSummaries.reduce((total, summary) => total + (Number(summary.budget_count) || 0), 0),
+      contract_count: matchingSummaries.reduce((total, summary) => total + (Number(summary.contract_count) || 0), 0)
+    }]
+  })
+})
+
 const courseFilter = ref('all')
+const fundingFilter = ref('all')
 const studentSearchQuery = ref('')
 const studentSearchResults = ref([])
 
 const showApplicantForm = ref(false)
 const showHistoryModal = ref(false)
+const showApplicantDetails = ref(false)
+const selectedApplicantDetails = ref(null)
+const manualPhotoInput = ref(null)
+const isEditingManualDetails = ref(false)
+const savingManualDetails = ref(false)
+const uploadingManualPhoto = ref(false)
+const manualDetailsError = ref('')
+const manualDetailsSuccess = ref('')
+const manualStudentForm = ref({
+  benefit_category: '',
+  contacts: {
+    telegram: '',
+    student_phone: '',
+    email: '',
+    home_address: '',
+    location: '',
+    mother_name: '',
+    mother_contacts: '',
+    father_name: '',
+    father_contacts: ''
+  }
+})
+const editableContactFields = [
+  { key: 'telegram', label: 'Контакт Телеграм' },
+  { key: 'student_phone', label: 'Мобільні телефони' },
+  { key: 'email', label: 'Електронна пошта' },
+  { key: 'home_address', label: 'Адреса' },
+  { key: 'location', label: 'Місце знаходження' },
+  { key: 'mother_name', label: 'ПІБ матері (або опікуна №1)' },
+  { key: 'mother_contacts', label: 'Контакти матері (телефони, телеграм)' },
+  { key: 'father_name', label: 'ПІБ батька (або опікуна №2)' },
+  { key: 'father_contacts', label: 'Контакти батька (телефони, телеграм)' }
+]
+const isAdmin = computed(() => {
+  try {
+    return JSON.parse(localStorage.getItem('ped_user') || 'null')?.role === 'admin'
+  } catch (error) {
+    console.error('Не вдалося прочитати роль користувача', error)
+    return false
+  }
+})
 const ungroupedApplicants = ref([])
 const academicLeaveApplicantsList = ref([])
 const dismissedApplicantsList = ref([])
@@ -770,6 +1092,143 @@ const applicantForm = ref({
   status: 'active',
   academic_leave_from: '',
   academic_leave_to: ''
+})
+
+const importedStudentData = computed(() => {
+  const student = selectedApplicantDetails.value
+  if (!student) return []
+
+  let importedData = student.imported_data || {}
+  if (typeof importedData === 'string') {
+    try {
+      importedData = JSON.parse(importedData)
+    } catch (error) {
+      console.error('Не вдалося прочитати додаткові дані студента', error)
+      importedData = {}
+    }
+  }
+
+  return importedData && typeof importedData === 'object' && !Array.isArray(importedData) ? importedData : {}
+})
+
+const studentDetailFields = computed(() => {
+  const student = selectedApplicantDetails.value
+  if (!student) return []
+
+  const importedData = importedStudentData.value
+  const studentFields = importedData.student_fields && typeof importedData.student_fields === 'object'
+    ? importedData.student_fields
+    : {}
+  const findImportedValue = (pattern) => {
+    const entry = Object.entries(importedData).find(([header, value]) =>
+      header !== 'student_fields' && pattern.test(header) &&
+      value !== null && value !== undefined && String(value).trim() !== ''
+    )
+    return entry ? entry[1] : ''
+  }
+  const valueFor = (key, pattern, fallback = '') => {
+    const canonicalValue = studentFields[key]
+    const value = canonicalValue !== null && canonicalValue !== undefined && String(canonicalValue).trim() !== ''
+      ? canonicalValue
+      : findImportedValue(pattern) || fallback
+    return value === null || value === undefined || String(value).trim() === '' ? '—' : String(value)
+  }
+
+  const fields = [
+    { label: 'Здобувач', value: valueFor('applicant', /здобувач|студент|піб|фио|applicant|student.?name/, student.applicant) },
+    { label: 'Дата народження', value: valueFor('birth_date', /дата.?народжен|народив|birth|^dob$/, importedData.birth_date) },
+    { label: 'Стать', value: valueFor('gender', /стать|gender|sex/) },
+    { label: 'Вступ на основі', value: valueFor('admission_basis', /вступ.*основ|основ.*вступ|основа вступу|admission.*basis|basis.*admission/) },
+    { label: 'Джерело фінансування', value: student.funding_source || '—' },
+    { label: 'Спеціальність', value: student.group_specialty || student.specialty || '—' },
+    { label: 'Курс', value: student.course ?? '—' },
+    { label: 'Група', value: student.group_name || 'Без групи' },
+    {
+      label: 'Початок навчання',
+      value: formatDateValue(valueFor(
+        'study_start_date',
+        /початок.*навчан|зарахування.*навчан|навчан.*з$|study.?start|enrollment.?date/
+      ))
+    },
+    {
+      label: 'Завершення навчання',
+      value: formatDateValue(valueFor(
+        'study_end_date',
+        /заверш.*навчан|закінч.*навчан|кінець.*навчан|навчан.*до$|study.?end|graduation.?date/
+      ))
+    },
+    { label: 'Код категорії', value: valueFor('category_code', /категор|category/, student.category_code) },
+    { label: 'Наказ про зарахування', value: valueFor('enrollment_order', /наказ.*зарах|зарах.*наказ|enrollment.?order|admission.?order/) },
+    { label: 'КБ при вступі', value: valueFor('admission_score', /кб.*(вступ|поступ)|((вступ|поступ).*кб)|competitive.?score|бал.*вступ/) }
+  ]
+
+  if (/академ/i.test(String(student.status || ''))) {
+    fields.push(
+      { label: 'Академвідпустка з', value: formatDateValue(student.academic_leave_from) },
+      { label: 'Академвідпустка по', value: formatDateValue(student.academic_leave_to) }
+    )
+  }
+
+  const contacts = student.student_contacts || {}
+  fields.push({ label: 'Пільгова категорія', value: String(contacts.benefit_category || '—') })
+  const contactFields = [
+    { label: 'Контакт Телеграм', value: contacts.telegram },
+    { label: 'Мобільні телефони', value: contacts.student_phone },
+    { label: 'Електронна Пошта', value: contacts.email },
+    { label: 'Адреса', value: contacts.home_address },
+    { label: 'Місце знаходження', value: contacts.location },
+    { label: 'Де саме знаходиться', value: contacts.location_details },
+    { label: 'ПІБ Матері (або опікуна №1)', value: contacts.mother_name },
+    { label: 'Контакти Матері (Телефони, телеграм)', value: contacts.mother_contacts },
+    { label: 'ПІБ Батька (або опікуна №2)', value: contacts.father_name },
+    { label: 'Контакти Батька (Телефони, телеграм)', value: contacts.father_contacts }
+  ]
+  fields.push(...contactFields
+    .filter((field) => String(field.value || '').trim())
+    .map((field) => ({ label: field.label, value: String(field.value) })))
+
+  return fields
+})
+
+const studentContactLabels = new Set([
+  'Пільгова категорія',
+  'Контакт Телеграм',
+  'Мобільні телефони',
+  'Електронна Пошта',
+  'Адреса',
+  'Місце знаходження',
+  'Де саме знаходиться'
+])
+
+const isParentContactField = (field) =>
+  /Матері|Батька|батьків\/опікунів/i.test(field.label)
+
+const studentMainFields = computed(() =>
+  studentDetailFields.value.filter((field) =>
+    !studentContactLabels.has(field.label) && !isParentContactField(field)
+  )
+)
+
+const studentContactFields = computed(() =>
+  studentDetailFields.value.filter((field) => studentContactLabels.has(field.label))
+)
+
+const studentParentFields = computed(() =>
+  studentDetailFields.value.filter(isParentContactField)
+)
+
+const studentPhotoUrl = computed(() => {
+  const photoEntry = Object.entries(importedStudentData.value).find(([label, value]) => isPhotoField(label) && value)
+  const value = String(selectedApplicantDetails.value?.photo_url || importedStudentData.value.photo_url || photoEntry?.[1] || '').trim()
+  if (/^https?:\/\//i.test(value) || /^data:image\/[a-z0-9.+-]+;base64,/i.test(value)) return value
+  if (value.startsWith('/uploads/')) {
+    return new URL(value, api.defaults.baseURL || window.location.origin).toString()
+  }
+  if (value.startsWith('/groups/applicants/')) {
+    const apiBaseUrl = String(api.defaults.baseURL || window.location.origin).replace(/\/+$/, '')
+    return new URL(value.slice(1), `${apiBaseUrl}/`).toString()
+  }
+  return ''
 })
 
 const normalizeSpecialtyKey = (value) => {
@@ -789,6 +1248,10 @@ const getSpecialtyFamilyKey = (value) => {
   const text = String(normalized || '').toLowerCase()
   const compact = text.replace(/[^a-zа-яїієґ0-9]/g, '')
 
+  if (/(?:^|[^a-zа-яїієґ0-9])(?:171|g5)(?=$|[^a-zа-яїієґ0-9])/i.test(text)) {
+    return '171/G5'
+  }
+
   if ((compact.includes('інженеріяпрограмногозабезпечення') || compact.includes('softwareengineering')) &&
     (compact.includes('121') || compact.includes('f2'))) {
     return '121/F2 Інженерія програмного забезпечення'
@@ -797,40 +1260,52 @@ const getSpecialtyFamilyKey = (value) => {
   return normalized
 }
 
-const specialtyOptions = computed(() => {
-  const allowed = (allGroups.value || [])
-    .map((group) => normalizeSpecialtyKey(group.specialty))
-    .filter((specialty) => {
-      if (!specialty) return false
-
-      const text = String(specialty).toLowerCase()
-      const compact = text.replace(/[^a-zа-яїієґ0-9]/g, '')
-
-      const hasSoftwareEngineering = compact.includes('інженеріяпрограмногозабезпечення') || compact.includes('softwareengineering')
-      const is121 = compact.includes('121')
-      const isF2 = compact.includes('f2')
-
-      return hasSoftwareEngineering && (is121 || isF2)
-    })
-
-  return [...new Set(allowed)].sort((a, b) => String(a).localeCompare(String(b), 'uk'))
-})
-
-const courseOptions = computed(() => [1, 2, 3, 4])
+const courseOptions = computed(() => [...new Set(
+  (allGroups.value || [])
+    .map((group) => Number(group.course))
+    .filter((course) => Number.isInteger(course) && course > 0)
+)].sort((a, b) => a - b))
 
 const hasActiveFilters = computed(() => {
-  return Boolean(searchQuery.value.trim()) || selectedSpecialty.value !== 'all' || courseFilter.value !== 'all'
+  return Boolean(studentSearchQuery.value.trim()) ||
+    courseFilter.value !== 'all' ||
+    fundingFilter.value !== 'all'
 })
+
+const groupDisplayStats = (group) => {
+  const isBudgetOnly = fundingFilter.value === 'budget'
+  const isContractOnly = fundingFilter.value === 'contract'
+  const total = isBudgetOnly
+    ? Number(group.budget_count) || 0
+    : isContractOnly
+      ? Number(group.contract_count) || 0
+      : Number(group.all_students_count ?? group.applicant_count) || 0
+  const active = isBudgetOnly
+    ? Number(group.active_budget_count) || 0
+    : isContractOnly
+      ? Number(group.active_contract_count) || 0
+      : Number(group.active_students_count) || 0
+
+  return {
+    all_students_count: total,
+    active_students_count: active,
+    academic_leave_count: Number(group.academic_leave_count) || 0,
+    budget_count: isContractOnly ? 0 : Number(group.budget_count) || 0,
+    active_budget_count: isContractOnly ? 0 : Number(group.active_budget_count) || 0,
+    contract_count: isBudgetOnly ? 0 : Number(group.contract_count) || 0,
+    active_contract_count: isBudgetOnly ? 0 : Number(group.active_contract_count) || 0
+  }
+}
 
 const filteredUngroupedApplicants = computed(() => {
   return (ungroupedApplicants.value || []).filter((student) => {
-    const selected = String(selectedSpecialty.value || '').trim()
-    if (!selected || selected === 'all') {
-      return true
-    }
+    if (courseFilter.value !== 'all' && Number(student.course) !== Number(courseFilter.value)) return false
 
-    const selectedKey = getSpecialtyFamilyKey(selected)
-    return getSpecialtyFamilyKey(student.specialty) === selectedKey
+    const fundingSource = String(student.funding_source || '').toLocaleLowerCase('uk')
+    if (fundingFilter.value === 'budget' && !fundingSource.includes('бюджет')) return false
+    if (fundingFilter.value === 'contract' && !fundingSource.includes('контракт')) return false
+
+    return true
   })
 })
 
@@ -838,10 +1313,11 @@ const groupStats = computed(() => {
   const currentGroups = groups.value || []
   const ungroupedCount = Number(filteredUngroupedApplicants.value.length || 0)
 
-  const groupBudget = currentGroups.reduce((sum, group) => sum + Number(group.budget_count ?? 0), 0)
-  const groupContract = currentGroups.reduce((sum, group) => sum + Number(group.contract_count ?? 0), 0)
-  const groupActiveBudget = currentGroups.reduce((sum, group) => sum + Number(group.active_budget_count ?? 0), 0)
-  const groupActiveContract = currentGroups.reduce((sum, group) => sum + Number(group.active_contract_count ?? 0), 0)
+  const groupStatsList = currentGroups.map(groupDisplayStats)
+  const groupBudget = groupStatsList.reduce((sum, stats) => sum + stats.budget_count, 0)
+  const groupContract = groupStatsList.reduce((sum, stats) => sum + stats.contract_count, 0)
+  const groupActiveBudget = groupStatsList.reduce((sum, stats) => sum + stats.active_budget_count, 0)
+  const groupActiveContract = groupStatsList.reduce((sum, stats) => sum + stats.active_contract_count, 0)
 
   const ungroupedBudget = (filteredUngroupedApplicants.value || []).filter((student) => {
     const source = String(student.funding_source || '').toLowerCase()
@@ -855,8 +1331,8 @@ const groupStats = computed(() => {
 
   return {
     totalGroups: currentGroups.length,
-    totalStudents: currentGroups.reduce((sum, group) => sum + Number(group.all_students_count ?? group.applicant_count ?? 0), 0) + ungroupedCount,
-    activeStudents: currentGroups.reduce((sum, group) => sum + Number(group.active_students_count ?? 0), 0) + (ungroupedApplicants.value || []).filter((student) => isActiveApplicant(student)).length,
+    totalStudents: groupStatsList.reduce((sum, stats) => sum + stats.all_students_count, 0) + ungroupedCount,
+    activeStudents: groupStatsList.reduce((sum, stats) => sum + stats.active_students_count, 0) + filteredUngroupedApplicants.value.filter((student) => isActiveApplicant(student)).length,
     budgetCount: groupBudget + ungroupedBudget,
     contractCount: groupContract + ungroupedContract,
     activeBudgetCount: groupActiveBudget + (filteredUngroupedApplicants.value || []).filter((student) => isActiveApplicant(student) && String(student.funding_source || '').toLowerCase().includes('бюджет')).length,
@@ -878,7 +1354,9 @@ const form = ref({
 
   course: null,
 
-  students_count: 0
+  students_count: 0,
+
+  class_teacher_id: ''
 
 })
 
@@ -918,7 +1396,16 @@ async function loadGroups() {
     loading.value = false
 
   }
+}
 
+async function loadTeachers() {
+  try {
+    const response = await api.get('/teachers')
+    teachers.value = response.data || []
+  } catch (error) {
+    console.error(error)
+    errorMessage.value = error.response?.data?.message || 'Не вдалося завантажити список викладачів.'
+  }
 }
 
 async function loadStatusApplicants() {
@@ -994,22 +1481,14 @@ function buildSpecialtySummaries(groupsList) {
 function applyGroupFilter() {
   let result = [...(allGroups.value || [])]
 
-  const query = String(searchQuery.value || '').trim().toLowerCase()
-
-  if (query) {
-    result = result.filter((group) => {
-      const searchable = `${group.name || ''} ${group.specialty || ''}`.toLowerCase()
-      return searchable.includes(query)
-    })
-  }
-
-  if (selectedSpecialty.value !== 'all') {
-    const selectedKey = getSpecialtyFamilyKey(selectedSpecialty.value)
-    result = result.filter((group) => getSpecialtyFamilyKey(group.specialty) === selectedKey)
-  }
-
   if (courseFilter.value !== 'all') {
     result = result.filter((group) => Number(group.course) === Number(courseFilter.value))
+  }
+
+  if (fundingFilter.value === 'budget') {
+    result = result.filter((group) => groupDisplayStats(group).budget_count > 0)
+  } else if (fundingFilter.value === 'contract') {
+    result = result.filter((group) => groupDisplayStats(group).contract_count > 0)
   }
 
   result.sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'uk'))
@@ -1018,9 +1497,10 @@ function applyGroupFilter() {
 }
 
 function resetFilters() {
-  searchQuery.value = ''
-  selectedSpecialty.value = 'all'
   courseFilter.value = 'all'
+  fundingFilter.value = 'all'
+  studentSearchQuery.value = ''
+  studentSearchResults.value = []
   applyGroupFilter()
 }
 
@@ -1040,18 +1520,122 @@ async function searchStudentByName() {
   }
 }
 
-function focusApplicant(match) {
-  studentSearchQuery.value = match.applicant || ''
+function openStudentDetails(student) {
+  selectedApplicantDetails.value = student
+  showApplicantDetails.value = true
+  isEditingManualDetails.value = false
+  manualDetailsError.value = ''
+  manualDetailsSuccess.value = ''
   studentSearchResults.value = []
+}
 
-  const targetGroup = allGroups.value.find((group) => Number(group.id) === Number(match.group_id))
-  if (targetGroup) {
-    const index = groups.value.findIndex((group) => Number(group.id) === Number(targetGroup.id))
-    if (index >= 0) {
-      const target = groups.value[index]
-      loadGroupApplicants(target)
-    }
+function closeStudentDetails() {
+  showApplicantDetails.value = false
+  selectedApplicantDetails.value = null
+  isEditingManualDetails.value = false
+  manualDetailsError.value = ''
+  manualDetailsSuccess.value = ''
+}
+
+function initializeManualStudentForm() {
+  const contacts = selectedApplicantDetails.value?.student_contacts || {}
+  manualStudentForm.value = {
+    benefit_category: String(contacts.benefit_category || ''),
+    contacts: Object.fromEntries(
+      editableContactFields.map(({ key }) => [key, String(contacts[key] || '')])
+    )
   }
+}
+
+function toggleManualDetailsEditor() {
+  if (isEditingManualDetails.value) {
+    cancelManualDetailsEditor()
+    return
+  }
+  initializeManualStudentForm()
+  manualDetailsError.value = ''
+  manualDetailsSuccess.value = ''
+  isEditingManualDetails.value = true
+}
+
+function cancelManualDetailsEditor() {
+  isEditingManualDetails.value = false
+  manualDetailsError.value = ''
+  manualDetailsSuccess.value = ''
+}
+
+function getAdminAuthHeaders() {
+  const token = localStorage.getItem('ped_token')
+  return token ? { Authorization: `Bearer ${token}` } : {}
+}
+
+async function saveManualStudentDetails() {
+  const student = selectedApplicantDetails.value
+  if (!student?.id) {
+    manualDetailsError.value = 'Не вдалося визначити студента.'
+    return
+  }
+
+  savingManualDetails.value = true
+  manualDetailsError.value = ''
+  manualDetailsSuccess.value = ''
+  try {
+    await api.put(`/groups/applicants/${student.id}/manual-details`, {
+      contacts: manualStudentForm.value.contacts,
+      benefit_category: manualStudentForm.value.benefit_category
+    }, { headers: getAdminAuthHeaders() })
+
+    selectedApplicantDetails.value = {
+      ...student,
+      student_contacts: {
+        ...(student.student_contacts || {}),
+        ...manualStudentForm.value.contacts,
+        benefit_category: manualStudentForm.value.benefit_category
+      }
+    }
+    manualDetailsSuccess.value = 'Контактні дані збережено.'
+    isEditingManualDetails.value = false
+  } catch (requestError) {
+    console.error(requestError)
+    manualDetailsError.value = requestError.response?.data?.message || 'Не вдалося зберегти контактні дані.'
+  } finally {
+    savingManualDetails.value = false
+  }
+}
+
+async function uploadManualPhoto(event) {
+  const file = event.target.files?.[0]
+  const student = selectedApplicantDetails.value
+  if (!file || !student?.id) return
+
+  uploadingManualPhoto.value = true
+  manualDetailsError.value = ''
+  manualDetailsSuccess.value = ''
+  try {
+    const formData = new FormData()
+    formData.append('photo', file)
+    const response = await api.post(
+      `/groups/applicants/${student.id}/manual-photo`,
+      formData,
+      { headers: getAdminAuthHeaders() }
+    )
+    selectedApplicantDetails.value = { ...student, photo_url: response.data.photo_url }
+    manualDetailsSuccess.value = response.data.message || 'Фото студента збережено.'
+  } catch (requestError) {
+    console.error(requestError)
+    manualDetailsError.value = requestError.response?.data?.message || 'Не вдалося зберегти фото студента.'
+  } finally {
+    uploadingManualPhoto.value = false
+    if (manualPhotoInput.value) manualPhotoInput.value.value = ''
+  }
+}
+
+function isPhotoField(label) {
+  return /(фото|photo|avatar|зображ|image|picture)/i.test(String(label || ''))
+}
+
+function isWebLink(value) {
+  return /^https?:\/\//i.test(String(value || '').trim())
 }
 
 function openApplicantEditor(groupId, applicant) {
@@ -1265,11 +1849,24 @@ function sortApplicantsAlphabetically(applicants) {
 }
 
 function regularApplicants(groupId) {
-  return sortApplicantsAlphabetically((applicantsByGroup.value[groupId] || []).filter((applicant) => isActiveApplicant(applicant)))
+  return sortApplicantsAlphabetically((applicantsByGroup.value[groupId] || []).filter((applicant) =>
+    isActiveApplicant(applicant) &&
+    matchesFundingFilter(applicant)
+  ))
 }
 
 function academicLeaveApplicants(groupId) {
-  return sortApplicantsAlphabetically((applicantsByGroup.value[groupId] || []).filter((applicant) => isAcademicLeaveApplicant(applicant)))
+  return sortApplicantsAlphabetically((applicantsByGroup.value[groupId] || []).filter((applicant) =>
+    isAcademicLeaveApplicant(applicant) &&
+    matchesFundingFilter(applicant)
+  ))
+}
+
+function matchesFundingFilter(applicant) {
+  const source = String(applicant.funding_source || '').toLocaleLowerCase('uk')
+  if (fundingFilter.value === 'budget') return source.includes('бюджет')
+  if (fundingFilter.value === 'contract') return source.includes('контракт')
+  return true
 }
 
 // ============================================
@@ -1289,7 +1886,8 @@ function openAddForm() {
 
     course: null,
 
-    students_count: 0
+    students_count: 0,
+    class_teacher_id: ''
 
   }
 
@@ -1311,7 +1909,8 @@ function openEditForm(group) {
     name: group.name,
     specialty: group.specialty || '',
     course: group.course,
-    students_count: group.students_count ?? group.applicant_count ?? 0
+    students_count: group.students_count ?? group.applicant_count ?? 0,
+    class_teacher_id: group.class_teacher_id ? String(group.class_teacher_id) : ''
   }
 
   showForm.value = true
@@ -1353,7 +1952,16 @@ async function importCsv(file) {
       }
     })
 
-    importMessage.value = `Імпортовано ${response.data.inserted} нових груп, оновлено ${response.data.updated}.`
+    const importedApplicants = Number(response.data.importedApplicants)
+    const applicantsWithDetails = Number(response.data.applicantsWithImportedDetails)
+    if (Number.isFinite(importedApplicants) && Number.isFinite(applicantsWithDetails)) {
+      importMessage.value = `Імпортовано ${response.data.inserted} нових груп, оновлено ${response.data.updated}. Дані CSV збережено для ${applicantsWithDetails} з ${importedApplicants} студентів.`
+      if (importedApplicants > 0 && applicantsWithDetails === 0) {
+        errorMessage.value = 'Імпорт завершився без додаткових даних студентів. Перезапустіть backend і повторіть імпорт CSV.'
+      }
+    } else {
+      importMessage.value = `Імпортовано ${response.data.inserted} нових груп, оновлено ${response.data.updated}. Backend не підтвердив збереження даних студентів; перезапустіть його та повторіть імпорт CSV.`
+    }
     await loadGroups()
   } catch (error) {
     console.error(error)
@@ -1364,6 +1972,88 @@ async function importCsv(file) {
     if (input) {
       input.value = null
     }
+  }
+}
+
+function handlePhotoArchiveChange(event) {
+  const files = Array.from(event.target.files || [])
+  if (!files.length) return
+  importStudentPhotoArchives(files)
+}
+
+async function importStudentPhotoArchives(files) {
+  photoImportLoading.value = true
+  errorMessage.value = ''
+  photoImportMessage.value = ''
+  unmatchedPhotoStudents.value = []
+
+  try {
+    const formData = new FormData()
+    files.forEach((file) => formData.append('files', file))
+    const response = await api.post('/groups/applicants/photos/import', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    const archiveErrors = (response.data.archives || [])
+      .filter((archive) => archive.error)
+      .map((archive) => `${archive.filename}: ${archive.error}`)
+    photoImportMessage.value =
+      `Фото збережено в базі для ${response.data.matched} студентів. Без фото в архіві (це нормально): ${response.data.missingPhotos}. Не вдалося зіставити через неоднозначні дані: ${response.data.unmatched}. Архівів: ${files.length}.` +
+      (archiveErrors.length ? ` Помилки: ${archiveErrors.join('; ')}` : '')
+    unmatchedPhotoStudents.value = response.data.unmatchedStudents || []
+    await loadGroups()
+  } catch (error) {
+    console.error(error)
+    const archives = error.response?.data?.archives || []
+    const archiveErrors = archives
+      .map((archive) => `${archive.filename}: ${archive.error || 'помилка обробки'}`)
+      .join('; ')
+    errorMessage.value = archiveErrors ||
+      error.response?.data?.message ||
+      'Не вдалося імпортувати фото студентів.'
+  } finally {
+    photoImportLoading.value = false
+    if (photoArchiveInput.value) photoArchiveInput.value.value = null
+  }
+}
+
+function handleContactsFileChange(event) {
+  const file = event.target.files?.[0]
+  if (file) importStudentContacts(file)
+}
+
+async function importStudentContacts(file) {
+  contactsImportLoading.value = true
+  errorMessage.value = ''
+  contactsImportMessage.value = ''
+  unmatchedContactStudents.value = []
+
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await api.post('/groups/applicants/contacts/import', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    contactsImportMessage.value =
+      `Контакти збережено для ${response.data.matched} студентів. Не зіставлено: ${response.data.unmatched}. Класних керівників прив'язано: ${response.data.linkedClassTeachers || 0}.` +
+      (response.data.classTeacherWarnings?.length
+        ? ` Перевірте дані класних керівників: ${response.data.classTeacherWarnings.join('; ')}.`
+        : '')
+    unmatchedContactStudents.value = response.data.unmatchedStudents || []
+
+    const expandedGroup = allGroups.value.find((group) => Number(group.id) === Number(expandedGroupId.value))
+    applicantsByGroup.value = {}
+    expandedGroupId.value = null
+    await loadGroups()
+    if (expandedGroup) {
+      const refreshedGroup = allGroups.value.find((group) => Number(group.id) === Number(expandedGroup.id))
+      if (refreshedGroup) await loadGroupApplicants(refreshedGroup)
+    }
+  } catch (error) {
+    console.error(error)
+    errorMessage.value = error.response?.data?.message || 'Не вдалося імпортувати контакти студентів.'
+  } finally {
+    contactsImportLoading.value = false
+    if (contactsFileInput.value) contactsFileInput.value.value = null
   }
 }
 
@@ -1605,6 +2295,7 @@ async function deleteGroup(id) {
 
 onMounted(() => {
   loadGroups()
+  loadTeachers()
   loadUngroupedApplicants()
   loadApplicantHistory()
 })
@@ -1717,6 +2408,11 @@ h1 {
   font-weight: 700;
 }
 
+.import-button.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 .add-button:hover,
 .import-button:hover,
 .reset-button:hover,
@@ -1731,6 +2427,30 @@ h1 {
   color: #047857;
   border: 1px solid rgba(16, 185, 129, 0.25);
   font-size: 0.94rem;
+}
+
+.unmatched-import-list {
+  padding: 11px 14px;
+  border: 1px solid #fcd34d;
+  border-radius: 12px;
+  background: #fffbeb;
+  color: #92400e;
+}
+
+.unmatched-import-list summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.unmatched-import-list ul {
+  max-height: 240px;
+  overflow-y: auto;
+  margin: 10px 0 0;
+  padding-left: 22px;
+}
+
+.unmatched-import-list li + li {
+  margin-top: 5px;
 }
 
 .error-message {
@@ -1901,14 +2621,27 @@ h1 {
 }
 
 .filter-group {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(155px, 1fr)) minmax(210px, 1.4fr) auto;
+  align-items: end;
   gap: 10px;
+  width: 100%;
 }
 
-.filter-group select {
-  min-width: 170px;
+.filter-control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.filter-control input,
+.filter-control select {
+  width: 100%;
+  min-width: 0;
   height: 42px;
   padding: 0 12px;
   border: 1px solid #dbe4f0;
@@ -1916,26 +2649,28 @@ h1 {
   background: #f8fafc;
   color: #0f172a;
   outline: none;
-  font-weight: 600;
+  font: inherit;
+  font-weight: 500;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
+
+.filter-control input:focus,
+.filter-control select:focus {
+  border-color: #7aa7f7;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.filter-control input::placeholder { color: #94a3b8; }
 
 .student-search-box {
-  min-width: 220px;
-  flex: 1 1 220px;
-  background: #f8fafc;
-  border: 1px solid #dbe4f0;
-  border-radius: 12px;
-  overflow: hidden;
+  min-width: 0;
 }
 
-.student-search-box input {
-  width: 100%;
-  height: 42px;
-  border: none;
-  background: transparent;
-  padding: 0 12px;
-  outline: none;
-  color: #0f172a;
+.filter-results-count {
+  margin: 8px 4px 0;
+  color: #64748b;
+  font-size: 0.86rem;
 }
 
 .student-search-results {
@@ -2187,6 +2922,64 @@ h1 {
   background: #f8fafc;
 }
 
+.combined-summary-section {
+  margin: 18px 20px 20px;
+  overflow: hidden;
+  border: 1px solid #cfe0fa;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #f8fbff, #fff);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.07);
+}
+
+.combined-summary-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border-bottom: 1px solid #dce8f8;
+  background: linear-gradient(110deg, #edf5ff, #f8fbff);
+}
+
+.combined-summary-eyebrow {
+  display: block;
+  margin-bottom: 4px;
+  color: #2563eb;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.combined-summary-heading h3 {
+  margin: 0;
+  color: #16325c;
+  font-size: 1rem;
+}
+
+.combined-summary-count {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border: 1px solid #cfe0fa;
+  border-radius: 999px;
+  background: #fff;
+  color: #315b91;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.combined-summary-section .summary-table th {
+  background: #f5f9ff;
+}
+
+.combined-summary-section .summary-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.combined-summary-section .summary-table tbody tr:hover td {
+  background: #f8fbff;
+}
+
 .table-container {
   overflow: hidden;
 }
@@ -2226,6 +3019,7 @@ td {
 
 @media (max-width: 900px) {
   .status-lists { grid-template-columns: 1fr; }
+  .filter-group { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 .group-toggle {
@@ -2301,6 +3095,22 @@ td {
   color: #2563eb;
 }
 
+.inline-actions .academic-leave-edit {
+  padding: 8px 13px;
+  border: 0;
+  border-radius: 10px;
+  background: #245be8;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 5px 12px rgba(37, 99, 235, 0.24);
+}
+
+.inline-actions .academic-leave-edit:hover {
+  background: #1f4fd1;
+  box-shadow: 0 7px 15px rgba(37, 99, 235, 0.3);
+}
+
 .delete-button {
   background: #fef2f2;
   color: #dc2626;
@@ -2330,6 +3140,14 @@ td {
   margin: 0 0 12px;
   font-size: 1rem;
   color: #1f2937;
+}
+
+.class-teacher-label {
+  display: block;
+  margin-top: 5px;
+  color: #64748b;
+  font-size: 0.88rem;
+  font-weight: 500;
 }
 
 .applicants-groups {
@@ -2380,6 +3198,21 @@ td {
   white-space: nowrap;
 }
 
+.student-name-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1d4ed8;
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.student-name-button:hover {
+  text-decoration: underline;
+}
+
 .modal-background {
   position: fixed;
   inset: 0;
@@ -2398,6 +3231,268 @@ td {
   border-radius: 16px;
   padding: 18px 18px 16px;
   box-shadow: 0 24px 48px rgba(15, 23, 42, 0.18);
+}
+
+.student-details-modal {
+  width: min(1120px, 100%);
+  max-width: 1120px;
+  max-height: min(92vh, 960px);
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.student-details-modal .modal-header {
+  margin-bottom: 20px;
+}
+
+.student-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.student-edit-button,
+.student-photo-button,
+.manual-save-button,
+.manual-cancel-button {
+  border: 0;
+  border-radius: 9px;
+  padding: 9px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.student-edit-button,
+.student-photo-button {
+  color: #1d4ed8;
+  background: #eff6ff;
+}
+
+.student-details-layout {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.75fr) minmax(0, 1.6fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.student-photo-wrap {
+  position: sticky;
+  top: 0;
+  min-height: 340px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid #dbe4f0;
+  border-radius: 16px;
+  background: #f1f5f9;
+}
+
+.student-photo-wrap img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 340px;
+  max-height: 480px;
+  object-fit: contain;
+}
+
+.student-photo-placeholder {
+  display: grid;
+  min-height: 340px;
+  place-items: center;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.student-photo-button {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.12);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.student-information {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.student-info-section h3 {
+  margin: 0 0 10px;
+  color: #334155;
+  font-size: 0.98rem;
+}
+
+.student-import-notice {
+  padding: 11px 14px;
+  border: 1px solid #fcd34d;
+  border-radius: 10px;
+  background: #fffbeb;
+  color: #92400e;
+  font-size: 0.9rem;
+}
+
+.manual-student-editor {
+  padding: 16px;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  background: #f8fbff;
+}
+
+.manual-student-editor h3 {
+  margin: 0 0 12px;
+  color: #1e3a8a;
+  font-size: 1rem;
+}
+
+.manual-student-editor form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.manual-student-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.manual-student-field span {
+  color: #475569;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.manual-student-field input,
+.manual-student-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 9px 10px;
+  background: #fff;
+  color: #0f172a;
+  font: inherit;
+}
+
+.manual-student-field textarea {
+  resize: vertical;
+}
+
+.manual-student-actions {
+  display: flex;
+  grid-column: 1 / -1;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.manual-save-button {
+  color: #fff;
+  background: #1d4ed8;
+}
+
+.manual-cancel-button {
+  color: #334155;
+  background: #e2e8f0;
+}
+
+.manual-save-button:disabled,
+.student-photo-button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.manual-student-error,
+.manual-student-success {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.manual-student-error {
+  color: #b91c1c;
+  background: #fef2f2;
+}
+
+.manual-student-success {
+  color: #047857;
+  background: #ecfdf5;
+}
+
+.student-details-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.student-detail-row {
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.student-detail-row dt {
+  margin-bottom: 5px;
+  color: #64748b;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.student-detail-row dd {
+  margin: 0;
+  color: #0f172a;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  line-height: 1.45;
+}
+
+.student-detail-row a {
+  color: #1d4ed8;
+}
+
+.student-contacts-disclosure {
+  overflow: hidden;
+  border: 1px solid #dbe4f0;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.student-contacts-disclosure summary {
+  padding: 14px 16px;
+  color: #1e3a8a;
+  background: #eff6ff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.student-contacts-disclosure[open] summary {
+  border-bottom: 1px solid #dbe4f0;
+}
+
+.student-contacts-disclosure .student-details-list {
+  padding: 14px;
+}
+
+.student-contacts-empty {
+  margin: 0;
+  padding: 14px 16px;
+  color: #64748b;
 }
 
 .modal-header {
@@ -2511,17 +3606,13 @@ td {
     align-items: stretch;
   }
 
-  .filter-group {
-    justify-content: stretch;
-  }
-
-  .filter-group > * {
-    flex: 1 1 100%;
-  }
-
   .applicants-groups {
     grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 560px) {
+  .filter-group { grid-template-columns: 1fr; }
 
   .nested-table {
     min-width: 540px;
@@ -2537,7 +3628,50 @@ td {
   td {
     padding: 12px 10px;
   }
+
+  .student-details-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .student-photo-wrap,
+  .student-photo-placeholder {
+    position: static;
+    min-height: 260px;
+    max-height: 340px;
+  }
+
+  .student-photo-wrap img {
+    min-height: 260px;
+    max-height: 340px;
+  }
+
+  .student-details-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .manual-student-editor form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .student-details-modal {
+    padding: 14px;
+  }
+}
+
+@media (min-width: 561px) and (max-width: 760px) {
+  .student-details-layout {
+    grid-template-columns: minmax(180px, 0.7fr) minmax(0, 1.3fr);
+    gap: 16px;
+  }
+
+  .student-photo-wrap,
+  .student-photo-placeholder {
+    min-height: 280px;
+  }
+
+  .student-photo-wrap img {
+    min-height: 280px;
+  }
 }
 </style>
-
-

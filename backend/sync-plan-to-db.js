@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'
 import mysql from 'mysql2/promise'
 import dotenv from 'dotenv'
 import crypto from 'crypto'
+import { ensurePlanSourceDataColumn } from './src/utils/planSchema.js'
 
 dotenv.config()
 
@@ -170,6 +171,7 @@ async function main() {
   const connection = await pool.getConnection()
 
   try {
+    await ensurePlanSourceDataColumn(connection)
     await connection.beginTransaction()
 
     const [planResult] = await connection.query(
@@ -210,9 +212,9 @@ async function main() {
                practical_hours, laboratory_hours, seminars_hours,
                self_study_hours, course_projects_hours,
                calculation_graphic_hours, field_training_hours,
-               control_type, exam, control_works,
+               control_type, credits, differential_credit, exam, control_works,
                teacher_id, backup_teacher_id)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
               studyPlanId,
               groupId,
@@ -228,7 +230,9 @@ async function main() {
               numeric(semester.courseWork),
               numeric(semester.calculationWork),
               numeric(semester.fieldTraining),
-              value(semester.differentialCredit || semester.credits),
+              value(semester.controlType),
+              value(semester.credits),
+              value(semester.differentialCredit),
               value(semester.exams),
               value(semester.controlWorks),
               teacherId,
